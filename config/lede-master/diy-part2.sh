@@ -38,5 +38,9 @@ git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 # Apply patch
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
 #
+# Add luci-app-adguardhome
+rm -rf package/luci-app-adguardhome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
+#
 # ------------------------------- Other ends -------------------------------
 
