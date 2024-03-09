@@ -43,4 +43,3 @@ rm -rf package/luci-app-adguardhome
 git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
 #
 # ------------------------------- Other ends -------------------------------
-

@@ -14,4 +14,3 @@ sed -i '$a src-git luci2 https://git.openwrt.org/project/luci.git' feeds.conf.de
 
 # other
 # rm -rf package/lean/{samba4,luci-app-samba4,luci-app-ttyd}
-
