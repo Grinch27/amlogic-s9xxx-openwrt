@@ -1,16 +1,23 @@
 # 修改记录 (针对 s905d Phicomm-N1)
 
-## 添加软件源
+## 添加软件源 git.openwrt.org
+
+<!-- src-git packages https://github.com/coolsnowwolf/packages
+src-git luci https://github.com/coolsnowwolf/luci
+src-git routing https://github.com/coolsnowwolf/routing
+src-git telephony https://git.openwrt.org/feed/telephony.git
+#src-git helloworld https://github.com/fw876/helloworld.git
+#src-git oui https://github.com/zhaojh329/oui.git
+#src-git video https://github.com/openwrt/video.git
+#src-git targets https://github.com/openwrt/targets.git
+#src-git oldpackages http://git.openwrt.org/packages.git
+#src-link custom /usr/src/openwrt/custom-feed -->
 
 - ### amlogic-s9xxx-openwrt\config\lede-master\diy-part1.sh 文件设置
 
 sed -i '$a src-git packages2 https://git.openwrt.org/feed/packages.git' feeds.conf.default
 sed -i '$a src-git luci2 https://git.openwrt.org/project/luci.git' feeds.conf.default
-
-- ### amlogic-s9xxx-openwrt\config\lede-master\config 文件设置
-
-添加luci-mod-network
-CONFIG_PACKAGE_luci-mod-network=y
+sed -i '$a src-git routing2 https://git.openwrt.org/feed/routing.git' feeds.conf.default
 
 ## 使用adguardhome替换adbyby
 
