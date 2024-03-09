@@ -77,6 +77,10 @@ CONFIG_PACKAGE_nginx-ssl-util=y
 CONFIG_PACKAGE_luci-nginx=y
 CONFIG_PACKAGE_luci-ssl-nginx=y
 CONFIG_PACKAGE_uwsgi=y
+CONFIG_PACKAGE_uwsgi-cgi-plugin=y
+CONFIG_PACKAGE_uwsgi-luci-support=y
+CONFIG_PACKAGE_uwsgi-syslog-plugin=y
+
 CONFIG_PACKAGE_php8=y
 CONFIG_PACKAGE_libopenssl-conf=y
 CONFIG_PACKAGE_openssl-util=y
