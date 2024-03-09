@@ -1,5 +1,17 @@
 # 修改记录 (针对 s905d Phicomm-N1)
 
+## 添加软件源
+
+- ### amlogic-s9xxx-openwrt\config\lede-master\diy-part1.sh 文件设置
+
+sed -i '$a src-git packages2 https://git.openwrt.org/feed/packages.git' feeds.conf.default
+sed -i '$a src-git luci2 https://git.openwrt.org/project/luci.git' feeds.conf.default
+
+- ### amlogic-s9xxx-openwrt\config\lede-master\config 文件设置
+
+添加luci-mod-network
+CONFIG_PACKAGE_luci-mod-network=y
+
 ## 使用adguardhome替换adbyby
 
 - ### amlogic-s9xxx-openwrt\config\lede-master\config 文件设置
@@ -66,6 +78,10 @@ CONFIG_PACKAGE_luci-i18n-autoreboot-zh-cn=y -> # CONFIG_PACKAGE_luci-i18n-autore
 \# CONFIG_PACKAGE_uhttpd is not set
 \# CONFIG_PACKAGE_uhttpd-mod-ubus is not set
 
+Luci安装选项
+\# CONFIG_PACKAGE_luci-nginx is not set
+CONFIG_PACKAGE_luci-ssl-nginx=y
+
 添加nginx支持
 CONFIG_PACKAGE_nginx=y
 CONFIG_PACKAGE_nginx-util=y
@@ -74,8 +90,7 @@ CONFIG_PACKAGE_nginx-mod-luci=y
 CONFIG_PACKAGE_nginx-mod-luci-ssl=y
 CONFIG_PACKAGE_nginx-ssl=y
 CONFIG_PACKAGE_nginx-ssl-util=y
-CONFIG_PACKAGE_luci-nginx=y
-CONFIG_PACKAGE_luci-ssl-nginx=y
+
 CONFIG_PACKAGE_uwsgi=y
 CONFIG_PACKAGE_uwsgi-cgi-plugin=y
 CONFIG_PACKAGE_uwsgi-luci-support=y
