@@ -57,3 +57,26 @@ CONFIG_PACKAGE_luci-i18n-autoreboot-zh-cn=y -> # CONFIG_PACKAGE_luci-i18n-autore
 - ### amlogic-s9xxx-openwrt\config\lede-master\config 文件设置
 
 \# CONFIG_PACKAGE_ipv6helper is not set -> CONFIG_PACKAGE_ipv6helper=y
+
+## 使用 nginx 替换 uhttpd
+
+- ### amlogic-s9xxx-openwrt\config\lede-master\config 文件设置
+
+删除uhttpd
+\# CONFIG_PACKAGE_uhttpd is not set
+\# CONFIG_PACKAGE_uhttpd-mod-ubus is not set
+
+添加nginx支持
+CONFIG_PACKAGE_nginx=y
+CONFIG_PACKAGE_nginx-util=y
+CONFIG_PACKAGE_nginx-all-module=y
+CONFIG_PACKAGE_nginx-mod-luci=y
+CONFIG_PACKAGE_nginx-mod-luci-ssl=y
+CONFIG_PACKAGE_nginx-ssl=y
+CONFIG_PACKAGE_nginx-ssl-util=y
+CONFIG_PACKAGE_luci-nginx=y
+CONFIG_PACKAGE_luci-ssl-nginx=y
+CONFIG_PACKAGE_uwsgi=y
+CONFIG_PACKAGE_php8=y
+CONFIG_PACKAGE_libopenssl-conf=y
+CONFIG_PACKAGE_openssl-util=y
