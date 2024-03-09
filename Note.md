@@ -1,4 +1,4 @@
-# 修改记录 (针对 s905d Phicomm-N1)
+# 修改记录 (针对 s905d Phicomm-N1) lede-master
 
 ## 添加软件源 git.openwrt.org
 
@@ -106,3 +106,53 @@ CONFIG_PACKAGE_uwsgi-syslog-plugin=y
 CONFIG_PACKAGE_php8=y
 CONFIG_PACKAGE_libopenssl-conf=y
 CONFIG_PACKAGE_openssl-util=y
+
+
+
+# 修改记录 (针对 s905d Phicomm-N1) openwrt-main
+
+## 添加软件源 git.openwrt.org
+
+- ### amlogic-s9xxx-openwrt\config\openwrt-main\diy-part1.sh 文件设置
+
+sed -i '$a src-git packages2 https://git.openwrt.org/feed/packages.git' feeds.conf.default
+sed -i '$a src-git luci2 https://git.openwrt.org/project/luci.git' feeds.conf.default
+sed -i '$a src-git routing2 https://git.openwrt.org/feed/routing.git' feeds.conf.default
+
+## 添加adguardhome
+
+- ### amlogic-s9xxx-openwrt\config\openwrt-main\config 文件设置
+
+添加adguardhome
+CONFIG_PACKAGE_luci-app-adguardhome=y
+
+- ### amlogic-s9xxx-openwrt\config\openwrt-main\diy-part2.sh 文件设置
+
+引入软件包仓库
+\# Add luci-app-adguardhome
+rm -rf package/luci-app-adguardhome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
+\#
+
+## 添加 dos2unix unix2dos
+
+- ### amlogic-s9xxx-openwrt\config\openwrt-main\config 文件设置
+
+添加dos2unix
+CONFIG_BUSYBOX_DEFAULT_DOS2UNIX=y
+CONFIG_PACKAGE_dos2unix=y
+
+添加unix2dos
+CONFIG_BUSYBOX_DEFAULT_UNIX2DOS=y
+CONFIG_PACKAGE_unix2dos=y
+
+## 使用 nginx 替换 uhttpd
+
+- ### amlogic-s9xxx-openwrt\config\lede-master\config 文件设置
+
+删除uhttpd
+\# CONFIG_PACKAGE_uhttpd is not set
+\# CONFIG_PACKAGE_uhttpd-mod-ubus is not set
+
+Luci安装选项
+CONFIG_PACKAGE_luci-ssl-nginx=y
