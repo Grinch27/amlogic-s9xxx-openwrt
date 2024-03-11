@@ -40,17 +40,21 @@ echo "
 CONFIG_PACKAGE_luci-app-adguardhome=y
 " >> .config
 
+# https://github.com/coolsnowwolf/luci.git
+# git clone https://github.com/coolsnowwolf/luci.git
+# cp -r ~/lede/package/lean ~/openwrt/package/lean
+
 # Add luci-app-vlmcsd
 # git clone https://github.com/mchome/luci-app-vlmcsd.git package/luci-app-vlmcsd
-echo "
-CONFIG_PACKAGE_luci-app-vlmcsd=y
-" >> .config
+# echo "
+# CONFIG_PACKAGE_luci-app-vlmcsd=y
+# " >> .config
 
 # Add luci-app-diskman
 # git clone https://github.com/lisaac/luci-app-diskman.git package/luci-app-diskman
-echo "
-CONFIG_PACKAGE_luci-app-diskman=y
-" >> .config
+# echo "
+# CONFIG_PACKAGE_luci-app-diskman=y
+# " >> .config
 
 # 无线Wifi支持
 echo "
