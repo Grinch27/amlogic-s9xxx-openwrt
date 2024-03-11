@@ -12,3 +12,23 @@
 # other
 # rm -rf package/utils/{ucode,fbtest}
 
+# ------------------------------- DIY -------------------------------
+
+# Add luci-app-adguardhome
+# rm -rf package/luci-app-adguardhome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
+
+# ----- coolsnowwolf/luci 克隆仓库到临时目录 -----
+git clone https://github.com/coolsnowwolf/luci.git package/coolsnowwolf/luci
+
+# 复制需要的子目录到 package/ 目录
+
+# Add luci-app-vlmcsd
+cp -r package/coolsnowwolf/luci/applications/luci-app-vlmcsd package/luci-app-vlmcsd
+
+# Add luci-app-diskman
+cp -r package/coolsnowwolf/luci/applications/luci-app-diskman package/luci-app-diskman
+
+# 删除临时目录 coolsnowwolf/luci
+rm -rf package/coolsnowwolf/luci
+

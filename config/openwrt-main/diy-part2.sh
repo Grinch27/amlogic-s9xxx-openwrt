@@ -30,3 +30,108 @@ git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
 #
 # ------------------------------- Other ends -------------------------------
+
+# ------------------------------- DIY -------------------------------
+
+# Add luci-app-adguardhome
+echo "
+CONFIG_PACKAGE_luci-app-adguardhome=y
+" >> .config
+
+# Add luci-app-vlmcsd
+echo "
+CONFIG_PACKAGE_luci-app-vlmcsd=y
+" >> .config
+
+# Add luci-app-diskman
+echo "
+CONFIG_PACKAGE_luci-app-diskman=y
+" >> .config
+
+# 无线Wifi支持
+echo "
+CONFIG_DRIVER_11AX_SUPPORT=y
+
+CONFIG_WPA_MBO_SUPPORT=y
+
+CONFIG_PACKAGE_wpad=n
+CONFIG_PACKAGE_wpad-basic=n
+CONFIG_PACKAGE_wpad-basic-mbedtls=n
+CONFIG_PACKAGE_wpad-basic-openssl=n
+CONFIG_PACKAGE_wpad-basic-wolfssl=n
+CONFIG_PACKAGE_wpad-mbedtls=n
+CONFIG_PACKAGE_wpad-mesh-mbedtls=n
+CONFIG_PACKAGE_wpad-mesh-openssl=n
+CONFIG_PACKAGE_wpad-mesh-wolfssl=y
+CONFIG_PACKAGE_wpad-mini=n
+CONFIG_PACKAGE_wpad-openssl=n
+CONFIG_PACKAGE_wpad-wolfssl=n
+" >> .config
+
+# 删除 uhttpd
+# sed -i 's/CONFIG_PACKAGE_uhttpd=y/CONFIG_PACKAGE_uhttpd=n/' .config
+# sed -i 's/CONFIG_PACKAGE_uhttpd-mod-ubus=y/CONFIG_PACKAGE_uhttpd-mod-ubus=n/' .config
+echo "
+CONFIG_PACKAGE_uhttpd=n
+CONFIG_PACKAGE_uhttpd-mod-ubus=n
+" >> .config
+
+# nginx Luci安装选项
+echo "
+CONFIG_PACKAGE_luci-ssl-nginx=y
+" >> .config
+
+# 添加 haproxy
+echo "
+CONFIG_PACKAGE_haproxy=y
+" >> .config
+
+# 删除 transmission
+# sed -i 's/CONFIG_PACKAGE_luci-app-transmission=y/CONFIG_PACKAGE_luci-app-transmission=n/' .config
+# sed -i 's/CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=y/CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=n/' .config
+# sed -i 's/CONFIG_PACKAGE_transmission-daemon=y/CONFIG_PACKAGE_transmission-daemon=n/' .config
+echo "
+CONFIG_PACKAGE_luci-app-transmission=n
+CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=n
+CONFIG_PACKAGE_transmission-daemon=n
+" >> .config
+
+# 添加 dos2unix
+echo "
+CONFIG_BUSYBOX_DEFAULT_DOS2UNIX=y
+CONFIG_PACKAGE_dos2unix=y
+" >> .config
+
+# 添加 unix2dos
+echo "
+CONFIG_BUSYBOX_DEFAULT_UNIX2DOS=y
+CONFIG_PACKAGE_unix2dos=y
+" >> .config
+
+# 添加 lrzsz
+echo "
+CONFIG_PACKAGE_lrzsz=y
+" >> .config
+
+# 使用 vim-full 替换 vim
+# sed -i 's/CONFIG_PACKAGE_vim=y/CONFIG_PACKAGE_vim=n/' .config
+echo "
+CONFIG_PACKAGE_vim=n
+CONFIG_PACKAGE_vim-full=y
+" >> .config
+
+# 添加 tcpdump
+echo "
+CONFIG_PACKAGE_tcpdump=y
+" >> .config
+
+# 添加 fail2ban
+echo "
+CONFIG_PACKAGE_fail2ban=y
+" >> .config
+
+# 添加 udpxy
+echo "
+CONFIG_PACKAGE_luci-app-udpxy=y
+CONFIG_PACKAGE_udpxy=y
+" >> .config--------------------------
