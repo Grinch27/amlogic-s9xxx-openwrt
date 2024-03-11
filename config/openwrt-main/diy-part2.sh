@@ -34,16 +34,20 @@ git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 # ------------------------------- DIY -------------------------------
 
 # Add luci-app-adguardhome
+rm -rf package/luci-app-adguardhome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
 echo "
 CONFIG_PACKAGE_luci-app-adguardhome=y
 " >> .config
 
 # Add luci-app-vlmcsd
+git clone https://github.com/mchome/luci-app-vlmcsd.git package/luci-app-vlmcsd
 echo "
 CONFIG_PACKAGE_luci-app-vlmcsd=y
 " >> .config
 
 # Add luci-app-diskman
+git clone https://github.com/lisaac/luci-app-diskman.git package/luci-app-diskman
 echo "
 CONFIG_PACKAGE_luci-app-diskman=y
 " >> .config
@@ -96,14 +100,11 @@ CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=n
 CONFIG_PACKAGE_transmission-daemon=n
 " >> .config
 
-# 添加 dos2unix
+# 添加 dos2unix unix2dos
 echo "
 CONFIG_BUSYBOX_DEFAULT_DOS2UNIX=y
 CONFIG_PACKAGE_dos2unix=y
-" >> .config
 
-# 添加 unix2dos
-echo "
 CONFIG_BUSYBOX_DEFAULT_UNIX2DOS=y
 CONFIG_PACKAGE_unix2dos=y
 " >> .config
@@ -134,4 +135,22 @@ CONFIG_PACKAGE_fail2ban=y
 echo "
 CONFIG_PACKAGE_luci-app-udpxy=y
 CONFIG_PACKAGE_udpxy=y
-" >> .config--------------------------
+" >> .config
+
+# 删除 frpc frps
+echo "
+CONFIG_PACKAGE_frpc=n
+CONFIG_PACKAGE_frps=n
+CONFIG_PACKAGE_luci-app-frpc=n
+CONFIG_PACKAGE_luci-app-frps=n
+CONFIG_PACKAGE_luci-i18n-frpc-zh-cn=n
+CONFIG_PACKAGE_luci-i18n-frps-zh-cn=n
+" >> .config
+
+# 删除 ddns
+echo "
+CONFIG_PACKAGE_luci-app-ddns=n
+CONFIG_PACKAGE_luci-i18n-ddns-zh-cn=n
+CONFIG_PACKAGE_ddns-scripts=n
+CONFIG_PACKAGE_ddns-scripts-services=n
+" >> .config
