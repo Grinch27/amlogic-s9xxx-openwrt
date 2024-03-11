@@ -200,3 +200,23 @@ CONFIG_PACKAGE_udpxy=y
 \# CONFIG_PACKAGE_luci-app-transmission is not set
 \# CONFIG_PACKAGE_luci-i18n-transmission-zh-cn is not set
 \# CONFIG_PACKAGE_transmission-daemon is not set
+
+## 删除 frpc frps
+
+echo "
+CONFIG_PACKAGE_frpc=n
+CONFIG_PACKAGE_frps=n
+CONFIG_PACKAGE_luci-app-frpc=n
+CONFIG_PACKAGE_luci-app-frps=n
+CONFIG_PACKAGE_luci-i18n-frpc-zh-cn=n
+CONFIG_PACKAGE_luci-i18n-frps-zh-cn=n
+" >> .config
+
+## 删除 ddns
+
+echo "
+CONFIG_PACKAGE_luci-app-ddns=n
+CONFIG_PACKAGE_luci-i18n-ddns-zh-cn=n
+CONFIG_PACKAGE_ddns-scripts=n
+CONFIG_PACKAGE_ddns-scripts-services=n
+" >> .config
