@@ -41,13 +41,13 @@ CONFIG_PACKAGE_luci-app-adguardhome=y
 " >> .config
 
 # Add luci-app-vlmcsd
-git clone https://github.com/mchome/luci-app-vlmcsd.git package/luci-app-vlmcsd
+# git clone https://github.com/mchome/luci-app-vlmcsd.git package/luci-app-vlmcsd
 echo "
 CONFIG_PACKAGE_luci-app-vlmcsd=y
 " >> .config
 
 # Add luci-app-diskman
-git clone https://github.com/lisaac/luci-app-diskman.git package/luci-app-diskman
+# git clone https://github.com/lisaac/luci-app-diskman.git package/luci-app-diskman
 echo "
 CONFIG_PACKAGE_luci-app-diskman=y
 " >> .config
