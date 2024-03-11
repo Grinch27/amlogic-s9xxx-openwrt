@@ -9,6 +9,11 @@
 # Add a feed source
 # sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
+# other
+# rm -rf package/utils/{ucode,fbtest}
+
+# ------------------------------- DIY -------------------------------
+
 # https://github.com/openwrt/openwrt/blob/main/feeds.conf.default
 # https://github.com/coolsnowwolf/lede/blob/master/feeds.conf.default
 
@@ -23,11 +28,6 @@
 # #src-git oldpackages http://git.openwrt.org/packages.git
 # #src-link custom /usr/src/openwrt/custom-feed
 # " > feeds.conf.default
-
-# other
-# rm -rf package/utils/{ucode,fbtest}
-
-# ------------------------------- DIY -------------------------------
 
 # Add luci-app-adguardhome
 # rm -rf package/luci-app-adguardhome
