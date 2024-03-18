@@ -119,7 +119,7 @@ config server '_lan'
 # 	option ssl_session_cache 'shared:SSL:32k'
 # 	option ssl_session_timeout '64m'
 # 	option access_log 'off; # logd openwrt'
-" >> ./files/etc/config/nginx
+" > ./files/etc/config/nginx
 
 # 添加 haproxy
 echo "
