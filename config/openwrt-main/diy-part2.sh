@@ -91,6 +91,7 @@ echo "
 CONFIG_PACKAGE_luci-ssl-nginx=y
 " >> .config
 
+mkdir -p ./files/etc/config
 echo "
 config main global
 	option uci_enable 'true'
