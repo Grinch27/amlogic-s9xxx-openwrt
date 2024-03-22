@@ -78,17 +78,14 @@ CONFIG_PACKAGE_wpad-openssl=n
 CONFIG_PACKAGE_wpad-wolfssl=n
 " >> .config
 
-# 删除 uhttpd
-# sed -i 's/CONFIG_PACKAGE_uhttpd=y/CONFIG_PACKAGE_uhttpd=n/' .config
-# sed -i 's/CONFIG_PACKAGE_uhttpd-mod-ubus=y/CONFIG_PACKAGE_uhttpd-mod-ubus=n/' .config
-echo "
-CONFIG_PACKAGE_uhttpd=n
-CONFIG_PACKAGE_uhttpd-mod-ubus=n
-" >> .config
+# ---------- install ----------
 
-# nginx Luci安装选项
+# nginx Luci安装选项 删除 uhttpd
 echo "
 CONFIG_PACKAGE_luci-ssl-nginx=y
+
+CONFIG_PACKAGE_uhttpd=n
+CONFIG_PACKAGE_uhttpd-mod-ubus=n
 " >> .config
 
 mkdir -p ./files/etc/config
@@ -125,16 +122,6 @@ config server '_lan'
 # 添加 haproxy
 echo "
 CONFIG_PACKAGE_haproxy=y
-" >> .config
-
-# 删除 transmission
-# sed -i 's/CONFIG_PACKAGE_luci-app-transmission=y/CONFIG_PACKAGE_luci-app-transmission=n/' .config
-# sed -i 's/CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=y/CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=n/' .config
-# sed -i 's/CONFIG_PACKAGE_transmission-daemon=y/CONFIG_PACKAGE_transmission-daemon=n/' .config
-echo "
-CONFIG_PACKAGE_luci-app-transmission=n
-CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=n
-CONFIG_PACKAGE_transmission-daemon=n
 " >> .config
 
 # 添加 dos2unix unix2dos
@@ -174,6 +161,15 @@ CONFIG_PACKAGE_luci-app-udpxy=y
 CONFIG_PACKAGE_udpxy=y
 " >> .config
 
+# ---------- uninstall ----------
+
+# 删除 transmission
+echo "
+CONFIG_PACKAGE_luci-app-transmission=n
+CONFIG_PACKAGE_luci-i18n-transmission-zh-cn=n
+CONFIG_PACKAGE_transmission-daemon=n
+" >> .config
+
 # 删除 frpc frps
 echo "
 CONFIG_PACKAGE_frpc=n
@@ -190,4 +186,10 @@ CONFIG_PACKAGE_luci-app-ddns=n
 CONFIG_PACKAGE_luci-i18n-ddns-zh-cn=n
 CONFIG_PACKAGE_ddns-scripts=n
 CONFIG_PACKAGE_ddns-scripts-services=n
+" >> .config
+
+# 删除openvpn
+echo "
+CONFIG_PACKAGE_luci-app-openvpn=n
+CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 " >> .config
