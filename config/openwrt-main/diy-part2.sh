@@ -107,7 +107,7 @@ CONFIG_PACKAGE_swconfig=y
 CONFIG_PACKAGE_kmod-swconfig=y
 " >> .config
 
-# nftables
+# nftables, abort iptables & xtables
 echo "
 CONFIG_PACKAGE_dnsmasq_full_nftset=y
 CONFIG_DEFAULT_nftables=y
@@ -115,7 +115,6 @@ CONFIG_PACKAGE_miniupnpd-nftables=y
 CONFIG_PACKAGE_nftables-json=y
 CONFIG_PACKAGE_nftables-nojson=n
 
-# abort iptables & xtables
 CONFIG_PACKAGE_ip6tables-nft=n
 CONFIG_PACKAGE_iptables-mod-extra=n
 CONFIG_PACKAGE_iptables-nft=n
