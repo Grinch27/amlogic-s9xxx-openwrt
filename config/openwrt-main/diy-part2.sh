@@ -161,6 +161,12 @@ CONFIG_PACKAGE_luci-app-udpxy=y
 CONFIG_PACKAGE_udpxy=y
 " >> .config
 
+# 添加 squid
+echo "
+CONFIG_PACKAGE_luci-app-squid=y
+CONFIG_PACKAGE_squid=y
+" >> .config
+
 # ---------- uninstall ----------
 
 # 删除 transmission
@@ -193,3 +199,6 @@ echo "
 CONFIG_PACKAGE_luci-app-openvpn=n
 CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 " >> .config
+
+# ---------- sync config ----------
+yes "" | make oldconfig
