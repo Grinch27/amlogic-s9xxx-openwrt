@@ -102,8 +102,31 @@ CONFIG_PACKAGE_libustream-wolfssl=n
 " >> .config
 
 # swconfig
-# CONFIG_PACKAGE_swconfig=y
-# CONFIG_PACKAGE_kmod-swconfig=y
+echo "
+CONFIG_PACKAGE_swconfig=y
+CONFIG_PACKAGE_kmod-swconfig=y
+" >> .config
+
+# nftables
+echo "
+CONFIG_PACKAGE_dnsmasq_full_nftset=y
+CONFIG_DEFAULT_nftables=y
+CONFIG_PACKAGE_miniupnpd-nftables=y
+CONFIG_PACKAGE_nftables-json=y
+CONFIG_PACKAGE_nftables-nojson=n
+
+# abort iptables & xtables
+CONFIG_PACKAGE_ip6tables-nft=n
+CONFIG_PACKAGE_iptables-mod-extra=n
+CONFIG_PACKAGE_iptables-nft=n
+CONFIG_PACKAGE_iptables-mod-tproxy=n
+CONFIG_PACKAGE_kmod-ip6tables=n
+CONFIG_PACKAGE_libxtables12=n
+CONFIG_PACKAGE_xtables-nft=n
+
+" >> .config
+
+
 
 # ---------- install ----------
 
