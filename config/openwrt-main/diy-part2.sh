@@ -176,6 +176,18 @@ CONFIG_PACKAGE_luci-app-squid=y
 CONFIG_PACKAGE_squid=y
 " >> .config
 
+# Immortalwrt
+echo "
+CONFIG_PACKAGE_6in4=y
+CONFIG_PACKAGE_block-mount=y
+CONFIG_PACKAGE_kmod-crypto-arc4=y
+CONFIG_PACKAGE_kmod-crypto-ecb=y
+CONFIG_PACKAGE_kmod-crypto-user=y
+CONFIG_PACKAGE_kmod-cryptodev=y
+CONFIG_PACKAGE_kmod-macvlan=y
+CONFIG_PACKAGE_kmod-mppe=y
+CONFIG_PACKAGE_kmod-sit=y
+" >> .config
 
 # ---------- uninstall ----------
 
