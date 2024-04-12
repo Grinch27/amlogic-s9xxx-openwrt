@@ -58,12 +58,16 @@ CONFIG_PACKAGE_luci-app-adguardhome=y
 # CONFIG_PACKAGE_luci-app-diskman=y
 # " >> .config
 
+# ---------- system packages ----------
+
 # 无线Wifi支持
 echo "
 CONFIG_DRIVER_11AX_SUPPORT=y
-
 CONFIG_WPA_MBO_SUPPORT=y
+" >> .config
 
+# wpad
+echo "
 CONFIG_PACKAGE_wpad=n
 CONFIG_PACKAGE_wpad-basic=n
 CONFIG_PACKAGE_wpad-basic-mbedtls=n
@@ -71,19 +75,42 @@ CONFIG_PACKAGE_wpad-basic-openssl=n
 CONFIG_PACKAGE_wpad-basic-wolfssl=n
 CONFIG_PACKAGE_wpad-mbedtls=n
 CONFIG_PACKAGE_wpad-mesh-mbedtls=n
-CONFIG_PACKAGE_wpad-mesh-openssl=n
-CONFIG_PACKAGE_wpad-mesh-wolfssl=y
+CONFIG_PACKAGE_wpad-mesh-openssl=y
+CONFIG_PACKAGE_wpad-mesh-wolfssl=n
 CONFIG_PACKAGE_wpad-mini=n
 CONFIG_PACKAGE_wpad-openssl=n
 CONFIG_PACKAGE_wpad-wolfssl=n
 " >> .config
+
+# iw
+echo "
+CONFIG_PACKAGE_iw=n
+CONFIG_PACKAGE_iw-full=y
+" >> .config
+
+# dnsmasq
+echo "
+CONFIG_PACKAGE_dnsmasq=n
+CONFIG_PACKAGE_dnsmasq-full=y
+" >> .config
+
+# libustream
+echo "
+CONFIG_PACKAGE_libustream-mbedtls=n
+CONFIG_PACKAGE_libustream-openssl=y
+CONFIG_PACKAGE_libustream-wolfssl=n
+" >> .config
+
+# swconfig
+# CONFIG_PACKAGE_swconfig=y
+# CONFIG_PACKAGE_kmod-swconfig=y
 
 # ---------- install ----------
 
 # nginx Luci安装选项 删除 uhttpd
 echo "
 CONFIG_PACKAGE_luci-ssl-nginx=y
-
+CONFIG_PACKAGE_luci-app-uhttpd=n
 CONFIG_PACKAGE_uhttpd=n
 CONFIG_PACKAGE_uhttpd-mod-ubus=n
 " >> .config
@@ -99,24 +126,7 @@ config server '_lan'
     option server_name '_lan'
     list include 'restrict_locally'
     list include 'conf.d/*.locations'
-    option access_log 'off; # logd openwrt'
-
-# config server '_redirect2ssl'
-# 	#list listen '80'
-# 	#list listen '[::]:80'
-# 	#option server_name '_redirect2ssl'
-# 	#option return '302 https://$host$request_uri'
-	
-# config server '_ssl'
-# 	list listen '443 ssl'
-# 	list listen '[::]:443 ssl'
-# 	option server_name '_ssl'
-# 	list include 'conf.d/*.locations'
-# 	option ssl_certificate '/etc/nginx/conf.d/_lan.crt'
-# 	option ssl_certificate_key '/etc/nginx/conf.d/_lan.key'
-# 	option ssl_session_cache 'shared:SSL:32k'
-# 	option ssl_session_timeout '64m'
-# 	option access_log 'off; # logd openwrt'
+    option access_log 'off'
 " > ./files/etc/config/nginx
 
 # 添加 haproxy
@@ -128,7 +138,6 @@ CONFIG_PACKAGE_haproxy=y
 echo "
 CONFIG_BUSYBOX_DEFAULT_DOS2UNIX=y
 CONFIG_PACKAGE_dos2unix=y
-
 CONFIG_BUSYBOX_DEFAULT_UNIX2DOS=y
 CONFIG_PACKAGE_unix2dos=y
 " >> .config
@@ -166,6 +175,7 @@ echo "
 CONFIG_PACKAGE_luci-app-squid=y
 CONFIG_PACKAGE_squid=y
 " >> .config
+
 
 # ---------- uninstall ----------
 
