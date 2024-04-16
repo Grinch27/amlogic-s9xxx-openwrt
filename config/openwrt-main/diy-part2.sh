@@ -255,5 +255,6 @@ sed -i '/CONFIG_PACKAGE_iptables-mod-tproxy/s/^.*$/CONFIG_PACKAGE_iptables-mod-t
 sed -i '/CONFIG_PACKAGE_kmod-ip6tables/s/^.*$/CONFIG_PACKAGE_kmod-ip6tables=n/' .config
 sed -i '/CONFIG_PACKAGE_libxtables12/s/^.*$/CONFIG_PACKAGE_libxtables12=n/' .config
 sed -i '/CONFIG_PACKAGE_xtables-nft/s/^.*$/CONFIG_PACKAGE_xtables-nft=n/' .config
+sed -i '/CONFIG_PACKAGE_libxtables/s/^.*$/CONFIG_PACKAGE_libxtables=n/' .config
 
 cat ./.config
