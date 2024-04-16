@@ -328,6 +328,8 @@ jobs:
           # make download -j8
           # find dl -size -1024c -exec ls -l {} \;
           # find dl -size -1024c -exec rm -f {} \;
+          # yes "" | make oldconfig
+          cat ./.config
           echo -e "Current working directory: $(pwd)"
           echo -e "make download: $(($(nproc) + 1)) thread"
           make download -j$(($(nproc) + 1))
