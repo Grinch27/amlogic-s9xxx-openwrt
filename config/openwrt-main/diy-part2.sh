@@ -120,9 +120,17 @@ CONFIG_PACKAGE_iptables-mod-extra=n
 CONFIG_PACKAGE_iptables-nft=n
 CONFIG_PACKAGE_iptables-mod-tproxy=n
 CONFIG_PACKAGE_kmod-ip6tables=n
+
+CONFIG_PACKAGE_libip4tc=n
+CONFIG_PACKAGE_libip6tc=n
+CONFIG_PACKAGE_libiptext=n
+CONFIG_PACKAGE_libiptext-nft=n
+CONFIG_PACKAGE_libiptext6=n
+
 CONFIG_PACKAGE_libxtables12=n
-CONFIG_PACKAGE_xtables-nft=n
 CONFIG_PACKAGE_libxtables=n
+CONFIG_PACKAGE_xtables-nft=n
+
 
 " >> .config
 
@@ -253,6 +261,12 @@ sed -i '/CONFIG_PACKAGE_iptables-mod-extra=/s/^.*$/CONFIG_PACKAGE_iptables-mod-e
 sed -i '/CONFIG_PACKAGE_iptables-nft=/s/^.*$/CONFIG_PACKAGE_iptables-nft=n/' .config
 sed -i '/CONFIG_PACKAGE_iptables-mod-tproxy=/s/^.*$/CONFIG_PACKAGE_iptables-mod-tproxy=n/' .config
 sed -i '/CONFIG_PACKAGE_kmod-ip6tables=/s/^.*$/CONFIG_PACKAGE_kmod-ip6tables=n/' .config
+
+sed -i '/CONFIG_PACKAGE_libip4tc=/s/^.*$/CONFIG_PACKAGE_libip4tc=n/' .config
+sed -i '/CONFIG_PACKAGE_libip6tc=/s/^.*$/CONFIG_PACKAGE_libip6tc=n/' .config
+sed -i '/CONFIG_PACKAGE_libiptext=/s/^.*$/CONFIG_PACKAGE_libiptext=n/' .config
+sed -i '/CONFIG_PACKAGE_libiptext-nft=/s/^.*$/CONFIG_PACKAGE_libiptext-nft=n/' .config
+sed -i '/CONFIG_PACKAGE_libiptext6=/s/^.*$/CONFIG_PACKAGE_libiptext6=n/' .config
 
 sed -i '/CONFIG_PACKAGE_libxtables12=/s/^.*$/CONFIG_PACKAGE_libxtables12=n/' .config
 sed -i '/CONFIG_PACKAGE_libxtables=/s/^.*$/CONFIG_PACKAGE_libxtables=n/' .config
