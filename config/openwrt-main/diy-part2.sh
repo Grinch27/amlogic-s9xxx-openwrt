@@ -246,15 +246,20 @@ CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 # ---------- sync config ----------
 yes "" | make oldconfig
 
+# ---------- /pattern/s/old/new/' file ----------
 # remove iptables & xtables
-# /pattern/s/old/new/' file
-sed -i '/CONFIG_PACKAGE_ip6tables-nft/s/^.*$/CONFIG_PACKAGE_ip6tables-nft=n/' .config
-sed -i '/CONFIG_PACKAGE_iptables-mod-extra/s/^.*$/CONFIG_PACKAGE_iptables-mod-extra=n/' .config
-sed -i '/CONFIG_PACKAGE_iptables-nft/s/^.*$/CONFIG_PACKAGE_iptables-nft=n/' .config
-sed -i '/CONFIG_PACKAGE_iptables-mod-tproxy/s/^.*$/CONFIG_PACKAGE_iptables-mod-tproxy=n/' .config
-sed -i '/CONFIG_PACKAGE_kmod-ip6tables/s/^.*$/CONFIG_PACKAGE_kmod-ip6tables=n/' .config
-sed -i '/CONFIG_PACKAGE_libxtables12/s/^.*$/CONFIG_PACKAGE_libxtables12=n/' .config
-sed -i '/CONFIG_PACKAGE_xtables-nft/s/^.*$/CONFIG_PACKAGE_xtables-nft=n/' .config
-sed -i '/CONFIG_PACKAGE_libxtables/s/^.*$/CONFIG_PACKAGE_libxtables=n/' .config
+sed -i '/CONFIG_PACKAGE_ip6tables-nft=/s/^.*$/CONFIG_PACKAGE_ip6tables-nft=n/' .config
+sed -i '/CONFIG_PACKAGE_iptables-mod-extra=/s/^.*$/CONFIG_PACKAGE_iptables-mod-extra=n/' .config
+sed -i '/CONFIG_PACKAGE_iptables-nft=/s/^.*$/CONFIG_PACKAGE_iptables-nft=n/' .config
+sed -i '/CONFIG_PACKAGE_iptables-mod-tproxy=/s/^.*$/CONFIG_PACKAGE_iptables-mod-tproxy=n/' .config
+sed -i '/CONFIG_PACKAGE_kmod-ip6tables=/s/^.*$/CONFIG_PACKAGE_kmod-ip6tables=n/' .config
+
+sed -i '/CONFIG_PACKAGE_libxtables12=/s/^.*$/CONFIG_PACKAGE_libxtables12=n/' .config
+sed -i '/CONFIG_PACKAGE_libxtables=/s/^.*$/CONFIG_PACKAGE_libxtables=n/' .config
+sed -i '/CONFIG_PACKAGE_xtables-nft=/s/^.*$/CONFIG_PACKAGE_xtables-nft=n/' .config
+
+# remove uhttpd
+sed -i '/CONFIG_PACKAGE_uhttpd=/s/^.*$/CONFIG_PACKAGE_uhttpd=n/' .config
+sed -i '/CONFIG_PACKAGE_uhttpd-mod-ubus=/s/^.*$/CONFIG_PACKAGE_uhttpd-mod-ubus=n/' .config
 
 cat ./.config
