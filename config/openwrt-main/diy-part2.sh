@@ -122,6 +122,7 @@ CONFIG_PACKAGE_iptables-mod-tproxy=n
 CONFIG_PACKAGE_kmod-ip6tables=n
 CONFIG_PACKAGE_libxtables12=n
 CONFIG_PACKAGE_xtables-nft=n
+CONFIG_PACKAGE_libxtables=n
 
 " >> .config
 
