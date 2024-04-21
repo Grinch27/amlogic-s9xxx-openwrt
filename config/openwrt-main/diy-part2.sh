@@ -131,7 +131,6 @@ CONFIG_PACKAGE_libxtables12=n
 CONFIG_PACKAGE_libxtables=n
 CONFIG_PACKAGE_xtables-nft=n
 
-
 " >> .config
 
 # ---------- install ----------
