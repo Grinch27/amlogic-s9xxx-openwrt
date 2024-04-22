@@ -204,6 +204,12 @@ CONFIG_PACKAGE_luci-app-squid=y
 CONFIG_PACKAGE_squid=y
 " >> .config
 
+# https-dns-proxy
+echo "
+CONFIG_PACKAGE_luci-app-https-dns-proxy=y
+CONFIG_PACKAGE_https-dns-proxy=y
+" >> .config
+
 # Immortalwrt
 echo "
 CONFIG_PACKAGE_6in4=y
