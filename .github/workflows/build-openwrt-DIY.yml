@@ -322,21 +322,16 @@ jobs:
           cd openwrt/
           ${GITHUB_WORKSPACE}/${DIY_P2_SH}
 
+      # DIY
       - name: Download package
         id: package
         run: |
           cd openwrt/
-          # make defconfig
-          # make download -j8
-          # find dl -size -1024c -exec ls -l {} \;
-          # find dl -size -1024c -exec rm -f {} \;
-          # yes "" | make oldconfig
+          make oldconfig
           cat ./.config
           echo -e "Current working directory: $(pwd)"
           echo -e "make download: $(($(nproc) + 1)) thread"
           make download -j$(($(nproc) + 1))
-          # find dl -size -1024c -exec ls -l {} \;
-          # find dl -size -1024c -exec rm -f {} \;
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Compile the OpenWrt
