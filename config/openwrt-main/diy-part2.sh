@@ -137,7 +137,8 @@ CONFIG_PACKAGE_xtables-nft=n
 
 # nginx Luci安装选项 删除 uhttpd
 echo "
-CONFIG_PACKAGE_luci-ssl-nginx=y
+# CONFIG_PACKAGE_luci-ssl-nginx=y
+CONFIG_PACKAGE_luci-nginx=y
 CONFIG_PACKAGE_luci-app-uhttpd=n
 CONFIG_PACKAGE_uhttpd=n
 CONFIG_PACKAGE_uhttpd-mod-ubus=n
