@@ -75,10 +75,10 @@ CONFIG_PACKAGE_wpad-basic-openssl=n
 CONFIG_PACKAGE_wpad-basic-wolfssl=n
 CONFIG_PACKAGE_wpad-mbedtls=n
 CONFIG_PACKAGE_wpad-mesh-mbedtls=n
-CONFIG_PACKAGE_wpad-mesh-openssl=y
+CONFIG_PACKAGE_wpad-mesh-openssl=n
 CONFIG_PACKAGE_wpad-mesh-wolfssl=n
 CONFIG_PACKAGE_wpad-mini=n
-CONFIG_PACKAGE_wpad-openssl=n
+CONFIG_PACKAGE_wpad-openssl=y
 CONFIG_PACKAGE_wpad-wolfssl=n
 " >> .config
 
