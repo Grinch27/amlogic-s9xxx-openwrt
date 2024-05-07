@@ -23,7 +23,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: aormsby/Fork-Sync-With-Upstream-action@main
+      - name: Checkout source repo
+        uses: actions/checkout@main
+
+      - name: Sync upstream changes
+        uses: aormsby/Fork-Sync-With-Upstream-action@main
         with:
           target_sync_branch: main
           target_repo_token: ${{ secrets.GITHUB_TOKEN }}
