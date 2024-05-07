@@ -39,11 +39,11 @@ jobs:
 
       - name: Copy files
         run: |
-          cp -rf source/${{ env.specific_folder }}/* upstream/
+          cp -rf ${{ github.workspace }}/source/${{ env.specific_folder }}/* ${{ github.workspace }}/upstream/
 
       - name: Commit and push changes
         run: |
-          cd upstream
+          cd ${{ github.workspace }}/upstream
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add .
