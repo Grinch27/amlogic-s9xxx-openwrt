@@ -1,0 +1,62 @@
+name: Sync Upstream and Overwrite Files
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  # push:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      specific_folder:
+        description: "Enter specific folder"
+        required: true
+        default: "DIY"
+        type: string
+
+env:
+  specific_folder: ${{ inputs.specific_folder || 'DIY' }}
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout upstream repo
+        uses: actions/checkout@main
+        with:
+          repository: ophub/amlogic-s9xxx-openwrt
+          fetch-depth: 1
+          path: upstream
+
+      - name: Checkout source repo
+        uses: actions/checkout@main
+        with:
+          repository: Grinch27/amlogic-s9xxx-openwrt
+          fetch-depth: 1
+          path: source
+
+      - name: Copy files
+        run: |
+          cp -rf source/${{ env.specific_folder }}/* upstream/
+
+      - name: Commit and push changes
+        run: |
+          cd upstream
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add .
+          git commit -m "Sync Upstream and Overwrite Files"
+          # git push
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+# jobs:
+#   call-build:
+#     uses: ophub/amlogic-s9xxx-openwrt/.github/workflows/build-openwrt.yml@main
+#     with:
+#       target: stage
