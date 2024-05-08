@@ -84,7 +84,7 @@ jobs:
               "kernel_repo": "ophub/kernel",
               "kernel_usage": "stable",
               "openwrt_storage": "save",
-              "builder_name": "builder"
+              "builder_name": "yourname"
             }
           }'
           curl -XPOST \
