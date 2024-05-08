@@ -1,4 +1,4 @@
-name: Sync Upstream
+name: Sync upstream & Call build
 
 on:
   schedule:
