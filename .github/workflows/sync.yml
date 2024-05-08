@@ -13,6 +13,7 @@ on:
         type: string
 
 env:
+  repo_upstream: ophub/amlogic-s9xxx-openwrt
   specific_folder: ${{ inputs.specific_folder || 'DIY' }}
 
 jobs:
@@ -22,10 +23,6 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Checkout source repo
-        id: source
-        uses: actions/checkout@main
-
       - name: Sync upstream changes
         id: upstream
         uses: aormsby/Fork-Sync-With-Upstream-action@main
@@ -33,39 +30,51 @@ jobs:
           target_sync_branch: main
           target_repo_token: ${{ secrets.GITHUB_TOKEN }}
           upstream_sync_branch: main
-          upstream_sync_repo: ophub/amlogic-s9xxx-openwrt
+          upstream_sync_repo: ${{ env.repo_upstream }}
 
       - name: Checkout source repo
+        id: source
         uses: actions/checkout@main
 
       - name: Copy files
         id: copy
+        working-directory: ${{ github.workspace }}
         run: |
-          # cp -rf ${{ github.workspace }}/source/${{ env.specific_folder }}/* ${{ github.workspace }}/upstream/
-          cp -rf ${{ github.workspace }}/${{ env.specific_folder }}/* ${{ github.workspace }}/
+          cp -rf ./${{ env.specific_folder }}/* ./
 
       - name: Check for changes
         id: changes
+        working-directory: ${{ github.workspace }}
         run: |
           git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
 
       - name: Commit changes
         id: commit
         if: steps.changes.outputs.changed == 'true'
+        working-directory: ${{ github.workspace }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add .
           git commit -m "Sync Upstream and Overwrite Files"
+          echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Push changes
         id: push
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.commit.outputs.status == 'success'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
           directory: ${{ github.workspace }}
+
+      - name: Clear workspace
+        id: clearwork
+        working-directory: ${{ github.workspace }}
+        run: |
+          rm -rf ./* 2>/dev/null
+          df -hT ${PWD}
+          echo "status=success" >> ${GITHUB_OUTPUT}
 
   call-build:
     needs: repo-sync
@@ -75,29 +84,34 @@ jobs:
       pull-requests: write
       repository-projects: write
     steps:
-      - name: Trigger Build OpenWrt workflow
+      - name: Trigger workflow - Build OpenWrt
+        id: trigger
         run: |
-          data='
-          {
-            "ref": "main",
-            "inputs": {
-              "source_branch": "openwrt-main",
-              "openwrt_board": "s905d",
-              "openwrt_kernel": "6.6.y",
-              "auto_kernel": "true",
-              "kernel_repo": "ophub/kernel",
-              "kernel_usage": "stable",
-              "openwrt_storage": "save",
-              "builder_name": "yourname"
+          trigger_workflow() {
+            local kernel_version=$1
+            data=$(cat <<EOF
+            {
+              "ref": "main",
+              "inputs": {
+                "source_branch": "openwrt-main",
+                "openwrt_board": "s905d",
+                "openwrt_kernel": "$kernel_version",
+                "auto_kernel": "true",
+                "kernel_repo": "ophub/kernel",
+                "kernel_usage": "stable",
+                "openwrt_storage": "save",
+                "builder_name": "yourname"
+              }
             }
-          }'
-          curl -XPOST \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: Bearer ${{ secrets.PAT }}" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-openwrt.yml/dispatches \
-          --data "$data"
+            EOF
+            )
+            curl -XPOST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.PAT }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-openwrt.yml/dispatches \
+            --data "$data"
+          }
 
-      # uses: ophub/amlogic-s9xxx-openwrt/.github/workflows/build-openwrt.yml@main
-      # with:
-      #   target: stage
+          trigger_workflow "6.6.y"
+          trigger_workflow "6.1.y"
