@@ -3,7 +3,6 @@ name: Sync Upstream
 on:
   schedule:
     - cron: "0 0 * * *"
-  # push:
   repository_dispatch:
   workflow_dispatch:
     inputs:
@@ -43,10 +42,6 @@ jobs:
 
       - name: Checkout source repo
         uses: actions/checkout@main
-        with:
-          repository: Grinch27/amlogic-s9xxx-openwrt
-          # fetch-depth: 1
-          # path: source
 
       - name: Copy files
         run: |
@@ -68,8 +63,34 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
           directory: ${{ github.workspace }}
-# jobs:
-#   call-build:
-#     uses: ophub/amlogic-s9xxx-openwrt/.github/workflows/build-openwrt.yml@main
-#     with:
-#       target: stage
+
+  call-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Trigger Build OpenWrt workflow
+        run: |
+          data='
+          {
+            "ref": "main",
+            "inputs": {
+              "source_branch": "openwrt-main",
+              "openwrt_board": "s905d",
+              "openwrt_kernel": "6.6.y",
+              "auto_kernel": "true",
+              "kernel_repo": "ophub/kernel",
+              "kernel_usage": "stable",
+              "openwrt_storage": "save"
+              "builder_name": "builder"
+            }
+          }'
+          curl -XPOST -u ":${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-openwrt.yml/dispatches \
+          --data "$data"
+
+      # uses: ophub/amlogic-s9xxx-openwrt/.github/workflows/build-openwrt.yml@main
+      # with:
+      #   target: stage
