@@ -65,6 +65,7 @@ jobs:
           directory: ${{ github.workspace }}
 
   call-build:
+    needs: repo-sync
     runs-on: ubuntu-latest
     permissions:
       contents: write
