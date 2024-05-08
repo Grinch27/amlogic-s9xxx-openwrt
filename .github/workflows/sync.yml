@@ -23,6 +23,9 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Checkout source repo
+        uses: actions/checkout@main
+
       - name: Sync upstream changes
         id: upstream
         uses: aormsby/Fork-Sync-With-Upstream-action@main
@@ -33,7 +36,6 @@ jobs:
           upstream_sync_repo: ${{ env.repo_upstream }}
 
       - name: Checkout source repo
-        id: source
         uses: actions/checkout@main
 
       - name: Copy files
