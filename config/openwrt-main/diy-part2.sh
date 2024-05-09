@@ -133,6 +133,27 @@ CONFIG_PACKAGE_xtables-nft=n
 
 " >> .config
 
+# ip-full
+echo "
+CONFIG_PACKAGE_ip-bridge=n
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_ip-tiny=n
+" >> .config
+
+# bridge
+echo "
+CONFIG_PACKAGE_bridge=y
+" >> .config
+
+# openssl
+echo "
+CONFIG_PACKAGE_openssl-util=y
+" >> .config
+
+echo "
+
+" >> .config
+
 # ---------- install ----------
 
 # nginx Luci安装选项 删除 uhttpd
@@ -158,12 +179,17 @@ config server '_lan'
     option access_log 'off'
 " > ./files/etc/config/nginx
 
-# 添加 haproxy
+# Old Luci
+echo "
+CONFIG_PACKAGE_luci-compat=y
+" >> .config
+
+# haproxy
 echo "
 CONFIG_PACKAGE_haproxy=y
 " >> .config
 
-# 添加 dos2unix unix2dos
+# dos2unix unix2dos
 echo "
 CONFIG_BUSYBOX_DEFAULT_DOS2UNIX=y
 CONFIG_PACKAGE_dos2unix=y
@@ -171,44 +197,51 @@ CONFIG_BUSYBOX_DEFAULT_UNIX2DOS=y
 CONFIG_PACKAGE_unix2dos=y
 " >> .config
 
-# 添加 lrzsz
+# lrzsz
 echo "
 CONFIG_PACKAGE_lrzsz=y
 " >> .config
 
-# 使用 vim-full 替换 vim
+# vim-full
 # sed -i 's/CONFIG_PACKAGE_vim=y/CONFIG_PACKAGE_vim=n/' .config
 echo "
 CONFIG_PACKAGE_vim=n
 CONFIG_PACKAGE_vim-full=y
 " >> .config
 
-# 添加 tcpdump
+# tcpdump
 echo "
 CONFIG_PACKAGE_tcpdump=y
 " >> .config
 
-# 添加 fail2ban
+# fail2ban
 echo "
 CONFIG_PACKAGE_fail2ban=y
-" >> .config
-
-# 添加 udpxy
-echo "
-CONFIG_PACKAGE_luci-app-udpxy=y
-CONFIG_PACKAGE_udpxy=y
-" >> .config
-
-# 添加 squid
-echo "
-CONFIG_PACKAGE_luci-app-squid=y
-CONFIG_PACKAGE_squid=y
 " >> .config
 
 # https-dns-proxy
 echo "
 CONFIG_PACKAGE_luci-app-https-dns-proxy=y
 CONFIG_PACKAGE_https-dns-proxy=y
+" >> .config
+
+# udpxy
+echo "
+CONFIG_PACKAGE_luci-app-udpxy=y
+CONFIG_PACKAGE_udpxy=y
+" >> .config
+
+# squid
+echo "
+CONFIG_PACKAGE_luci-app-squid=y
+CONFIG_PACKAGE_squid=y
+" >> .config
+
+# iperf3
+echo "
+CONFIG_PACKAGE_iperf=n
+CONFIG_PACKAGE_iperf3=y
+CONFIG_PACKAGE_iperf3-ssl=n
 " >> .config
 
 # Immortalwrt
@@ -259,6 +292,7 @@ CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 
 # ---------- sync config ----------
 make oldconfig
+cat ./.config
 
 # ---------- /pattern/s/old/new/' file ----------
 # remove iptables & xtables
@@ -281,5 +315,3 @@ make oldconfig
 # # remove uhttpd
 # sed -i '/CONFIG_PACKAGE_uhttpd=/s/^.*$/CONFIG_PACKAGE_uhttpd=n/' .config
 # sed -i '/CONFIG_PACKAGE_uhttpd-mod-ubus=/s/^.*$/CONFIG_PACKAGE_uhttpd-mod-ubus=n/' .config
-
-cat ./.config
