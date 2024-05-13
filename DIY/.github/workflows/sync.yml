@@ -142,7 +142,8 @@ jobs:
 
           # Save the modified data to the target file
           with open(target_file, 'w') as file:
-              file.write(yaml_str)"""
+              file.write(yaml_str)
+          """
           cat ${{ env.TARGET_FILE }}
           ls -R ${{ github.workspace }}/.github/workflows
 
