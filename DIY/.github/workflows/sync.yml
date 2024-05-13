@@ -25,6 +25,7 @@ jobs:
       pull-requests: write
       repository-projects: write
       actions: write
+      workflows: write
     steps:
       - name: Checkout source repo
         uses: actions/checkout@main
@@ -34,7 +35,7 @@ jobs:
         uses: aormsby/Fork-Sync-With-Upstream-action@main
         with:
           target_sync_branch: main
-          target_repo_token: ${{ secrets.PAT }}
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
           upstream_sync_branch: main
           upstream_sync_repo: ${{ env.repo_upstream }}
 
@@ -90,6 +91,7 @@ jobs:
       pull-requests: write
       repository-projects: write
       actions: write
+      workflows: write
     steps:
       - name: Checkout source repo
         uses: actions/checkout@main
