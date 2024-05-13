@@ -108,10 +108,11 @@ jobs:
         run: |
           cp ${{ env.SOURCE_FILE }} ${{ env.TARGET_FILE }}
           sed -i -r 's/^name: .*/name: DIY Build OpenWrt/g' ${{ env.TARGET_FILE }}
-          sed -i '/- name: Upload the packaged OpenWrt/ i \
+          sed -i "/- name: Upload the packaged OpenWrt/ i \
                 - name: Remove date from file names\
-                  working-directory: ${{ env.PACKAGED_OUTPUTPATH }}\
-                  run: rename 's/_\d{4}.\d{2}.\d{2}//g' *.img.gz' ${{ env.TARGET_FILE }}
+                  working-directory: \"\${{ env.PACKAGED_OUTPUTPATH }}\"\
+                  run: rename \"s/_\d{4}.\d{2}.\d{2}//g\" *.img.gz\
+          " "\${{ env.TARGET_FILE }}"
           cat ${{ env.TARGET_FILE }}
           ls -R ${{ github.workspace }}/.github/workflows
 
