@@ -1,9 +1,8 @@
-name: Sync Upstream and Overwrite Files
+name: Sync upstream & Call build
 
 on:
   schedule:
     - cron: "0 0 * * *"
-  # push:
   repository_dispatch:
   workflow_dispatch:
     inputs:
@@ -14,6 +13,7 @@ on:
         type: string
 
 env:
+  repo_upstream: ophub/amlogic-s9xxx-openwrt
   specific_folder: ${{ inputs.specific_folder || 'DIY' }}
 
 jobs:
@@ -23,40 +23,143 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Checkout upstream repo
+      - name: Checkout source repo
         uses: actions/checkout@main
+
+      - name: Sync upstream changes
+        id: upstream
+        uses: aormsby/Fork-Sync-With-Upstream-action@main
         with:
-          repository: ophub/amlogic-s9xxx-openwrt
-          fetch-depth: 1
-          path: upstream
+          target_sync_branch: main
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: main
+          upstream_sync_repo: ${{ env.repo_upstream }}
 
       - name: Checkout source repo
         uses: actions/checkout@main
-        with:
-          repository: Grinch27/amlogic-s9xxx-openwrt
-          fetch-depth: 1
-          path: source
 
       - name: Copy files
+        id: copy
+        working-directory: ${{ github.workspace }}
         run: |
-          cp -rf source/${{ env.specific_folder }}/* upstream/
+          cp -rf ./${{ env.specific_folder }}/* ./
 
-      - name: Commit and push changes
+      - name: Check for changes
+        id: changes
+        working-directory: ${{ github.workspace }}
         run: |
-          cd upstream
+          git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
+
+      - name: Commit changes
+        id: commit
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: ${{ github.workspace }}
+        run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add .
           git commit -m "Sync Upstream and Overwrite Files"
-          # git push
+          echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Push changes
+        id: push
+        if: steps.commit.outputs.status == 'success'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-# jobs:
-#   call-build:
-#     uses: ophub/amlogic-s9xxx-openwrt/.github/workflows/build-openwrt.yml@main
-#     with:
-#       target: stage
+          directory: ${{ github.workspace }}
+
+      - name: Clear workspace
+        id: clearwork
+        working-directory: ${{ github.workspace }}
+        run: |
+          rm -rf ./* 2>/dev/null
+          df -hT ${PWD}
+          echo "status=success" >> ${GITHUB_OUTPUT}
+
+  diy:
+    needs: repo-sync
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@main
+
+      - name: Set up Python
+        uses: actions/setup-python@main
+        with:
+          python-version: "3.12"
+          check-latest: false
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Generate DIY Workflow
+        working-directory: ${{ github.workspace }}
+        env:
+          SOURCE_FILE: ".github/workflows/build-openwrt.yml"
+          TARGET_FILE: ".github/workflows/DIY-build-openwrt.yml"
+        run: |
+          python -c """
+          import yaml
+          import os
+          import re
+
+          source_file = os.getenv('SOURCE_FILE')
+          target_file = os.getenv('TARGET_FILE')
+
+          with open(source_file, 'r') as file:
+              data = yaml.safe_load(file)
+
+          # Find the step that needs to be modified
+          for job in data['jobs'].values():
+              for step in job['steps']:
+                  if step.get('id') == 'codes':
+                      # Modify the command
+                      step['run'] = re.sub(r'_\$\(\s*date\s*\+\s*"\\%Y\.\\%m"\s*\)', '', step['run'])
+
+          # Save the modified data to the target file
+          with open(target_file, 'w') as file:
+              yaml.safe_dump(data, file)
+          """
+
+  call-build:
+    needs: diy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+    strategy:
+      matrix:
+        openwrt_kernel: ["6.6.y", "6.1.y"]
+      fail-fast: false
+      max-parallel: 2
+    steps:
+      - name: Trigger workflow - Build OpenWrt
+        id: trigger
+        run: |
+          data='
+          {
+            "ref": "main",
+            "inputs": {
+              "source_branch": "openwrt-main",
+              "openwrt_board": "s905d",
+              "openwrt_kernel": "${{ matrix.openwrt_kernel }}",
+              "auto_kernel": "true",
+              "kernel_repo": "ophub/kernel",
+              "kernel_usage": "stable",
+              "openwrt_storage": "save",
+              "builder_name": "yourname"
+            }
+          }'
+          curl -XPOST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.PAT }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-openwrt.yml/dispatches \
+          --data "$data"
