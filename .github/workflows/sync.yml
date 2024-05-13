@@ -126,6 +126,8 @@ jobs:
           with open(target_file, 'w') as file:
               yaml.safe_dump(data, file)
           """
+          cat ${{ env.TARGET_FILE }}
+
       - name: Check for changes
         id: changes
         working-directory: ${{ github.workspace }}
