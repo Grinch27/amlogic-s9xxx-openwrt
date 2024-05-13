@@ -141,6 +141,7 @@ jobs:
               yaml.safe_dump(data, file)
           """
           cat ${{ env.TARGET_FILE }}
+          ls -R ./
 
       - name: Check for changes
         id: changes
