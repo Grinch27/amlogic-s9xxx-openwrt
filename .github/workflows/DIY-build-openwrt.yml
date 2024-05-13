@@ -381,10 +381,8 @@ jobs:
           builder_name: ${{ inputs.builder_name }}
 
       - name: Remove date from file names
-
-        working-directory: "\"
-
-        run: rename "s/_d{4}.d{2}.d{2}//g" *.img.gz
+        working-directory: ${{ env.PACKAGED_OUTPUTPATH }}
+        run: rename "s/_d{4}.d{2}.d{2}//g" *.img.gz(.sha)?
 
       - name: Upload the packaged OpenWrt
         uses: ncipollo/release-action@main
