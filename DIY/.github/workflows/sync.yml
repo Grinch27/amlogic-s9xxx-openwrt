@@ -126,6 +126,39 @@ jobs:
           with open(target_file, 'w') as file:
               yaml.safe_dump(data, file)
           """
+      - name: Check for changes
+        id: changes
+        working-directory: ${{ github.workspace }}
+        run: |
+          git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
+
+      - name: Commit changes
+        id: commit
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: ${{ github.workspace }}
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add .
+          git commit -m "Sync Upstream and Overwrite Files"
+          echo "status=success" >> ${GITHUB_OUTPUT}
+
+      - name: Push changes
+        id: push
+        if: steps.commit.outputs.status == 'success'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: ${{ github.workspace }}
+
+      - name: Clear workspace
+        id: clearwork
+        working-directory: ${{ github.workspace }}
+        run: |
+          rm -rf ./* 2>/dev/null
+          df -hT ${PWD}
+          echo "status=success" >> ${GITHUB_OUTPUT}
 
   call-build:
     needs: diy
