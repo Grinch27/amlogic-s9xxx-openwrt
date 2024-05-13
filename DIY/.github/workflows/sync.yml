@@ -148,7 +148,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           git add .
-          git diff || echo "changed=true" >> ${GITHUB_OUTPUT}
+          git diff --cached || echo "changed=true" >> ${GITHUB_OUTPUT}
 
       - name: Commit changes
         id: commit
