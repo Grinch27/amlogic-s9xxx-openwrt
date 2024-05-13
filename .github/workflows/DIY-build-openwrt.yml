@@ -1,0 +1,427 @@
+name: DIY Build OpenWrt
+true:
+  repository_dispatch: null
+  workflow_dispatch:
+    inputs:
+      auto_kernel:
+        default: true
+        description: Auto use the latest kernel
+        required: false
+        type: boolean
+      builder_name:
+        default: ophub
+        description: Set OpenWrt builder signature.
+        options:
+        - ophub
+        - angel
+        - yourname
+        required: false
+        type: choice
+      kernel_repo:
+        default: ophub/kernel
+        description: Set the kernel repository
+        options:
+        - ophub/kernel
+        required: false
+        type: choice
+      kernel_usage:
+        default: stable
+        description: Set the tags of the stable kernel.
+        options:
+        - stable
+        - flippy
+        - dev
+        - beta
+        required: false
+        type: choice
+      openwrt_board:
+        default: all
+        description: Select device board
+        options:
+        - all
+        - s905w_s905x_s905mb_s905l3b_s905x2_s905x3_s912_s922x_s922x-ct2000_s922x-reva
+        - s905x3-x88-pro-x3_s912-m8s-pro_s905x-t95_s912-t95z-plus_s905l3-unt400g1_s905lb-r3300l
+        - seewo-sv21_smart-am40_station-m1_sw799_tn3399_zysj_tvi3315a_xiaobao_zcube1-max
+        - vplus_tanix-tx6_tqc-a01
+        - a311d
+        - beikeyun
+        - chainedbox
+        - crrc
+        - dg3399
+        - dlfr100
+        - doornet2
+        - e25
+        - eaidk-610
+        - emb3531
+        - fine3399
+        - firefly-rk3399
+        - jp-tvbox
+        - h28k
+        - h66k
+        - h68k
+        - h69k
+        - h88k
+        - h88k-v3
+        - hs530r
+        - hugsun-x99
+        - ipc-r
+        - king3399
+        - kylin3399
+        - leez
+        - lx-r3s
+        - mrkaio-m68s
+        - nanopi-r5c
+        - nanopi-r5s
+        - panther-x2
+        - r66s
+        - r68s
+        - renegade-rk3328
+        - rk3318-box
+        - rock5b
+        - s905
+        - s905-beelink-mini
+        - s905-mxqpro-plus
+        - s905d
+        - s905d-ki-pro
+        - s905d-sml5442tw
+        - s905l
+        - s905l-mg101
+        - s905l2
+        - s905l2-e900v21e
+        - s905l2-wojia
+        - s905l3
+        - s905l3-cm211
+        - s905l3-unt400g1
+        - s905l3a
+        - s905l3a-cm311
+        - s905l3a-m401a
+        - s905l3b
+        - s905l3b-e900v22d
+        - s905l3b-e900v22e
+        - s905l3b-ip103h
+        - s905l3b-rg020et-ca
+        - s905l3b-unt403a
+        - s905lb-q96-mini
+        - s905lb-r3300l
+        - s905mb
+        - s905w
+        - s905w-w95
+        - s905w-x96-mini
+        - s905w-x96w
+        - s905x
+        - s905x-b860h
+        - s905x-nexbox-a95x
+        - s905x-t95
+        - s905x-tbee
+        - s905x-tx9
+        - s905x2
+        - s905x2-km3
+        - s905x2-x96max-2g
+        - s905x3
+        - s905x3-2101
+        - s905x3-a100
+        - s905x3-a95xf3
+        - s905x3-a95xf3-gb
+        - s905x3-b
+        - s905x3-h96max
+        - s905x3-hk1
+        - s905x3-ip1001m
+        - s905x3-q1
+        - s905x3-q2
+        - s905x3-tx3
+        - s905x3-tx3-bz
+        - s905x3-ugoosx3
+        - s905x3-whale
+        - s905x3-x88-pro-x3
+        - s905x3-x96air
+        - s905x3-x96air-gb
+        - s905x3-x96max
+        - s912
+        - s912-h96pro-plus
+        - s912-m8s-pro
+        - s912-nexbox-a1
+        - s912-nexbox-a2
+        - s912-onecloudpro
+        - s912-phicomm-t1
+        - s912-t95z-plus
+        - s912-tx8-max
+        - s912-tx9-pro-2g
+        - s912-tx9-pro-3g
+        - s912-x92
+        - s912-zyxq-fake
+        - s922x
+        - s922x-ct2000
+        - s922x-gtking
+        - s922x-gtkingpro-h
+        - s922x-odroid-n2
+        - s922x-reva
+        - s922x-ugoos-am6
+        - seewo-sv21
+        - smart-am40
+        - station-m1
+        - sw799
+        - tanix-tx6
+        - tb-ls3399
+        - tn3399
+        - tqc-a01
+        - tvi3315a
+        - vplus
+        - xiaobao
+        - zcube1-max
+        - zysj
+        required: false
+        type: choice
+      openwrt_kernel:
+        default: 6.1.y_6.6.y
+        description: Select kernel version
+        options:
+        - 5.4.y
+        - 5.10.y
+        - 5.15.y
+        - 6.1.y
+        - 6.6.y
+        - 6.1.y_6.6.y
+        - 5.15.y_5.10.y
+        required: false
+        type: choice
+      openwrt_storage:
+        default: save
+        description: Select image storage type.
+        options:
+        - save
+        - temp
+        required: false
+        type: choice
+      source_branch:
+        default: openwrt-main
+        description: Select the source branch
+        options:
+        - openwrt-main
+        - lede-master
+        - immortalwrt-master
+        required: false
+        type: choice
+env:
+  CONFIG_FILE: config/${{ inputs.source_branch }}/config
+  DIY_P1_SH: config/${{ inputs.source_branch }}/diy-part1.sh
+  DIY_P2_SH: config/${{ inputs.source_branch }}/diy-part2.sh
+  FEEDS_CONF: config/${{ inputs.source_branch }}/feeds.conf.default
+  TZ: America/New_York
+jobs:
+  build:
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - env:
+        DEBIAN_FRONTEND: noninteractive
+      id: init
+      name: Initialization environment
+      run: 'docker rmi $(docker images -q) 2>/dev/null
+
+        [[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
+
+        sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android
+        2>/dev/null
+
+        sudo swapoff -a
+
+        sudo rm -f /swapfile /mnt/swapfile
+
+        sudo -E apt-get -y update
+
+        sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet*
+        powershell openjdk* mongodb* moby* || true
+
+        sudo -E apt-get -y install $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
+
+        sudo -E systemctl daemon-reload
+
+        #sudo -E apt-get -y full-upgrade
+
+        sudo -E apt-get -y autoremove --purge
+
+        sudo -E apt-get clean
+
+        sudo sed -i ''/NVM_DIR/d;/skel/d'' /root/{.bashrc,.profile}
+
+        sudo rm -rf ~/{.cargo,.dotnet,.rustup}
+
+        sudo timedatectl set-timezone "${TZ}"
+
+        echo "status=success" >> ${GITHUB_OUTPUT}
+
+        '
+    - name: Create simulated physical disk
+      run: 'mnt_size=$(expr $(df -h /mnt | tail -1 | awk ''{print $4}'' | sed ''s/[[:alpha:]]//g''
+        | sed ''s/\..*//'') - 1)
+
+        root_size=$(expr $(df -h / | tail -1 | awk ''{print $4}'' | sed ''s/[[:alpha:]]//g''
+        | sed ''s/\..*//'') - 4)
+
+        sudo truncate -s "${mnt_size}"G /mnt/mnt.img
+
+        sudo truncate -s "${root_size}"G /root.img
+
+        sudo losetup /dev/loop6 /mnt/mnt.img
+
+        sudo losetup /dev/loop7 /root.img
+
+        sudo pvcreate /dev/loop6
+
+        sudo pvcreate /dev/loop7
+
+        sudo vgcreate github /dev/loop6 /dev/loop7
+
+        sudo lvcreate -n runner -l 100%FREE github
+
+        sudo mkfs.xfs /dev/github/runner
+
+        sudo mkdir -p /builder
+
+        sudo mount /dev/github/runner /builder
+
+        sudo chown -R runner.runner /builder
+
+        df -Th
+
+        '
+    - id: codes
+      if: ${{ steps.init.outputs.status }} == 'success' && !cancelled()
+      name: Clone source code [ ${{ inputs.source_branch }} ]
+      run: "# Set up compilation source code\nif [[ \"${{ inputs.source_branch }}\"\
+        \ == *\"openwrt\"* ]]; then\n    REPO_URL=\"https://github.com/openwrt/openwrt\"\
+        \n    REPO_BRANCH=\"main\"\n    TAGS_NAME=\"official\"\nelif [[ \"${{ inputs.source_branch\
+        \ }}\" == *\"lede\"* ]]; then\n    REPO_URL=\"https://github.com/coolsnowwolf/lede\"\
+        \n    REPO_BRANCH=\"master\"\n    TAGS_NAME=\"lede\"\nelif [[ \"${{ inputs.source_branch\
+        \ }}\" == *\"immortalwrt\"* ]]; then\n    REPO_URL=\"https://github.com/immortalwrt/immortalwrt\"\
+        \n    REPO_BRANCH=\"master\"\n    TAGS_NAME=\"immortalwrt\"\nelse\n    echo\
+        \ \"Unknown source code repository.\"\n    exit 1\nfi\n\n# Clone source code\n\
+        git clone -q --single-branch --depth=1 --branch=${REPO_BRANCH} ${REPO_URL}\
+        \ openwrt\nln -sf /builder/openwrt ${GITHUB_WORKSPACE}/openwrt\nln -sf /builder/openwrt\
+        \ /home/runner/work/_actions/ophub/amlogic-s9xxx-openwrt/main/openwrt\n\n\
+        # Set output information\necho \"build_tag=OpenWrt_${TAGS_NAME}_${{ inputs.openwrt_storage\
+        \ }}_$(date +\"%Y.%m\")\" >> ${GITHUB_OUTPUT}\necho -e \"REPO_URL: [ ${REPO_URL}\
+        \ ]\\nREPO_BRANCH: [ ${REPO_BRANCH} ]\\nTAGS_NAME: [ ${TAGS_NAME} ]\"\ndf\
+        \ -hT ${PWD}\necho \"REPO_URL=${REPO_URL}\" >> ${GITHUB_OUTPUT}\necho \"TAGS_NAME=${TAGS_NAME}\"\
+        \ >> ${GITHUB_OUTPUT}\necho \"status=success\" >> ${GITHUB_OUTPUT}\n"
+      working-directory: /builder
+    - name: Load custom feeds
+      run: '[[ -f "${FEEDS_CONF}" ]] && cp -f ${FEEDS_CONF} openwrt/feeds.conf.default
+
+        chmod +x ${DIY_P1_SH}
+
+        cd openwrt/
+
+        ${GITHUB_WORKSPACE}/${DIY_P1_SH}
+
+        '
+    - name: Update feeds
+      run: cd openwrt/ && ./scripts/feeds update -a
+    - name: Install feeds
+      run: cd openwrt/ && ./scripts/feeds install -a
+    - name: Load custom configuration
+      run: '[[ -d "files" ]] && mv -f files openwrt/files
+
+        [[ -e "${CONFIG_FILE}" ]] && cp -f ${CONFIG_FILE} openwrt/.config
+
+        chmod +x ${DIY_P2_SH}
+
+        cd openwrt/
+
+        ${GITHUB_WORKSPACE}/${DIY_P2_SH}
+
+        '
+    - id: package
+      name: Download package
+      run: 'cd openwrt/
+
+        make defconfig
+
+        make download -j8
+
+        find dl -size -1024c -exec ls -l {} \;
+
+        find dl -size -1024c -exec rm -f {} \;
+
+        '
+    - id: compile
+      name: Compile the OpenWrt
+      run: 'cd openwrt/
+
+        echo -e "$(nproc) thread compile"
+
+        make -j$(($(nproc) + 1)) V=s || make -j1 || make -j1 V=s
+
+        echo "status=success" >> ${GITHUB_OUTPUT}
+
+        '
+    - id: clean
+      if: ${{ steps.compile.outputs.status }} == 'success' && !cancelled()
+      name: Clear server space
+      run: '# Clean up server space
+
+        cd openwrt/
+
+        [[ -d "output" ]] || mkdir output
+
+        cp -f bin/targets/*/*/*rootfs.tar.gz output/
+
+        cp -f .config output/config
+
+        rm -rf $(ls . | grep -v "^output$" | xargs) 2>/dev/null
+
+
+        # Generate sha256sum file
+
+        cd output/
+
+        for file in *; do [[ ! -d "${file}" ]] && sha256sum "${file}" >"${file}.sha";
+        done
+
+
+        # Set output information
+
+        df -hT ${PWD}
+
+        echo "status=success" >> ${GITHUB_OUTPUT}
+
+        '
+    - if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
+      name: Upload OpenWrt to Release
+      uses: ncipollo/release-action@main
+      with:
+        allowUpdates: true
+        artifacts: openwrt/output/*
+        removeArtifacts: false
+        replacesArtifacts: true
+        tag: ${{ steps.codes.outputs.build_tag }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
+      name: Packaging OpenWrt
+      uses: ophub/amlogic-s9xxx-openwrt@main
+      with:
+        auto_kernel: ${{ inputs.auto_kernel }}
+        builder_name: ${{ inputs.builder_name }}
+        kernel_repo: ${{ inputs.kernel_repo }}
+        kernel_usage: ${{ inputs.kernel_usage }}
+        openwrt_board: ${{ inputs.openwrt_board }}
+        openwrt_kernel: ${{ inputs.openwrt_kernel }}
+        openwrt_path: openwrt/output/*rootfs.tar.gz
+    - if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
+      name: Upload the packaged OpenWrt
+      uses: ncipollo/release-action@main
+      with:
+        allowUpdates: true
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
+        body: "### OpenWrt Image information\n- Default IP: 192.168.1.1\n- Default\
+          \ username: root\n- Default password: password\n- Default WIFI name: OpenWrt\n\
+          - Default WIFI password: none\n### Install to EMMC\n- Login to OpenWrt \u2192\
+          \ System \u2192 Amlogic Service \u2192 Install OpenWrt\n### OpenWrt source\
+          \ code\n- [${{ steps.codes.outputs.TAGS_NAME }}](${{ steps.codes.outputs.REPO_URL\
+          \ }})\n### OpenWrt Image Verification\n- sha256sum\n"
+        removeArtifacts: false
+        replacesArtifacts: true
+        tag: ${{ steps.codes.outputs.build_tag }}
+        token: ${{ secrets.GITHUB_TOKEN }}
