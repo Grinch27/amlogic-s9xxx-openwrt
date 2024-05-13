@@ -208,4 +208,4 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ env.workflow_target }}/dispatches \
-          --data "$data" || exit 1
+          --data "$data"
