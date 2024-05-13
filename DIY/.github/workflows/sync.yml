@@ -100,50 +100,15 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
 
-      - name: Set up Python
-        uses: actions/setup-python@main
-        with:
-          python-version: "3.12"
-          check-latest: false
-
-      - name: Install PyYAML
-        run: pip install pyyaml
-
       - name: Generate DIY Workflow
         working-directory: ${{ github.workspace }}
         env:
           SOURCE_FILE: ${{ github.workspace }}/.github/workflows/build-openwrt.yml
           TARGET_FILE: ${{ github.workspace }}/.github/workflows/DIY-build-openwrt.yml
         run: |
-          python -c """
-          import yaml
-          import os
-          import re
-
-          source_file = os.getenv('SOURCE_FILE')
-          target_file = os.getenv('TARGET_FILE')
-
-          with open(source_file, 'r') as file:
-              data = yaml.safe_load(file)
-
-          # Modify the workflow name
-          data['name'] = 'DIY Build OpenWrt'
-
-          # Find the step that needs to be modified
-          for job in data['jobs'].values():
-              for step in job['steps']:
-                  if step.get('id') == 'codes':
-                      # Modify the command
-                      step['run'] = re.sub(r'_$(date +"%Y.%m")', '', step['run'])
-
-          # Replace 'true:' with 'on:'
-          yaml_str = yaml.safe_dump(data, default_style='"')
-          yaml_str = re.sub(r'^true:', 'on:', yaml_str, flags=re.MULTILINE)
-
-          # Save the modified data to the target file
-          with open(target_file, 'w') as file:
-              file.write(yaml_str)
-          """
+          cp ${{ env.SOURCE_FILE }} ${{ env.TARGET_FILE }}
+          sed -i -r 's/^name: .*/name: DIY Build OpenWrt/g' ${{ env.TARGET_FILE }}
+          sed -i 's/_$(date +"%Y.%m")//g' ${{ env.TARGET_FILE }}
           cat ${{ env.TARGET_FILE }}
           ls -R ${{ github.workspace }}/.github/workflows
 
