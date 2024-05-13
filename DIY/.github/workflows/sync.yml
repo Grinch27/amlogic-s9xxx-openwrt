@@ -127,7 +127,7 @@ jobs:
               data = yaml.safe_load(file)
 
           # Modify the workflow name
-          data['name'] = 'DIY Build OpenWrt'
+          # data['name'] = 'DIY Build OpenWrt'
 
           # Find the step that needs to be modified
           for job in data['jobs'].values():
