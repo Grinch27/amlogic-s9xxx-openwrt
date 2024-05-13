@@ -25,10 +25,11 @@ jobs:
       pull-requests: write
       repository-projects: write
       actions: write
-      workflows: write
     steps:
       - name: Checkout source repo
         uses: actions/checkout@main
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Sync upstream changes
         id: upstream
@@ -41,6 +42,8 @@ jobs:
 
       - name: Checkout source repo
         uses: actions/checkout@main
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Copy files
         id: copy
@@ -91,10 +94,11 @@ jobs:
       pull-requests: write
       repository-projects: write
       actions: write
-      workflows: write
     steps:
       - name: Checkout source repo
         uses: actions/checkout@main
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@main
