@@ -17,7 +17,7 @@ env:
   specific_folder: ${{ inputs.specific_folder || 'DIY' }}
 
 jobs:
-  repo-sync:
+  sync:
     runs-on: ubuntu-latest
     # needs: pre-set
     permissions:
@@ -51,7 +51,8 @@ jobs:
         id: changes
         working-directory: ${{ github.workspace }}
         run: |
-          git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
+          git add .
+          git diff --cached --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
 
       - name: Commit changes
         id: commit
@@ -60,7 +61,6 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add .
           git commit -m "Sync Upstream and Overwrite Files"
           echo "status=success" >> ${GITHUB_OUTPUT}
 
@@ -69,7 +69,7 @@ jobs:
         if: steps.commit.outputs.status == 'success'
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}"
           branch: ${{ github.ref }}
           directory: ${{ github.workspace }}
 
@@ -82,7 +82,7 @@ jobs:
           echo "status=success" >> ${GITHUB_OUTPUT}
 
   diy:
-    needs: repo-sync
+    needs: sync
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -149,7 +149,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git commit -m "Sync Upstream and Overwrite Files"
+          git commit -m "DIY files"
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Push changes
@@ -157,7 +157,7 @@ jobs:
         if: steps.commit.outputs.status == 'success'
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}"
           branch: ${{ github.ref }}
           directory: ${{ github.workspace }}
 
