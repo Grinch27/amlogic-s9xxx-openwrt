@@ -34,7 +34,7 @@ jobs:
         uses: aormsby/Fork-Sync-With-Upstream-action@main
         with:
           target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          target_repo_token: ${{ secrets.PAT }}
           upstream_sync_branch: main
           upstream_sync_repo: ${{ env.repo_upstream }}
 
