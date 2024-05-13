@@ -134,10 +134,10 @@ jobs:
               for step in job['steps']:
                   if step.get('id') == 'codes':
                       # Modify the command
-                      step['run'] = re.sub(r'_\$\(\s*date\s*\+\s*"\\%Y\.\\%m"\s*\)', '', step['run'])
+                      step['run'] = re.sub(r'_$(date +"%Y.%m")', '', step['run'])
 
           # Replace 'true:' with 'on:'
-          yaml_str = yaml.safe_dump(data)
+          yaml_str = yaml.safe_dump(data, default_style='"')
           yaml_str = re.sub(r'^true:', 'on:', yaml_str, flags=re.MULTILINE)
 
           # Save the modified data to the target file
