@@ -1,5 +1,5 @@
-name: Build OpenWrt
-true:
+name: DIY Build OpenWrt
+on:
   repository_dispatch: null
   workflow_dispatch:
     inputs:
