@@ -115,8 +115,8 @@ jobs:
       - name: Generate DIY Workflow
         working-directory: ${{ github.workspace }}
         env:
-          SOURCE_FILE: ./.github/workflows/build-openwrt.yml
-          TARGET_FILE: ./.github/workflows/DIY-build-openwrt.yml
+          SOURCE_FILE: ${{ github.workspace }}/.github/workflows/build-openwrt.yml
+          TARGET_FILE: ${{ github.workspace }}/.github/workflows/DIY-build-openwrt.yml
         run: |
           python -c """
           import yaml
