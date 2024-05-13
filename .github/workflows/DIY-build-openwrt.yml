@@ -1,4 +1,4 @@
-name: DIY Build OpenWrt
+name: Build OpenWrt
 true:
   repository_dispatch: null
   workflow_dispatch:
