@@ -147,6 +147,7 @@ jobs:
         id: changes
         working-directory: ${{ github.workspace }}
         run: |
+          git add .
           git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
 
       - name: Commit changes
@@ -156,7 +157,6 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git add .
           git commit -m "Sync Upstream and Overwrite Files"
           echo "status=success" >> ${GITHUB_OUTPUT}
 
