@@ -13,6 +13,7 @@ on:
         type: string
 
 env:
+  repo_name: $(echo ${{ github.repository }} | cut -d '/' -f 2)
   repo_upstream: ophub/amlogic-s9xxx-openwrt
   specific_folder: ${{ inputs.specific_folder || 'DIY' }}
 
@@ -40,20 +41,20 @@ jobs:
 
       - name: Copy files
         id: copy
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/${{ env.repo_name }}
         run: |
           cp -rf ./${{ env.specific_folder }}/* ./
 
       - name: Check for changes
         id: changes
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/${{ env.repo_name }}
         run: |
           git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
 
       - name: Commit changes
         id: commit
         if: steps.changes.outputs.changed == 'true'
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/${{ env.repo_name }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
@@ -68,7 +69,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-          directory: ${{ github.workspace }}
+          directory: ${{ github.workspace }}/${{ env.repo_name }}
 
       - name: Clear workspace
         id: clearwork
@@ -99,10 +100,10 @@ jobs:
         run: pip install pyyaml
 
       - name: Generate DIY Workflow
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/${{ env.repo_name }}
         env:
-          SOURCE_FILE: ".github/workflows/build-openwrt.yml"
-          TARGET_FILE: ".github/workflows/DIY-build-openwrt.yml"
+          SOURCE_FILE: ./.github/workflows/build-openwrt.yml
+          TARGET_FILE: ./.github/workflows/DIY-build-openwrt.yml
         run: |
           python -c """
           import yaml
@@ -130,14 +131,14 @@ jobs:
 
       - name: Check for changes
         id: changes
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/${{ env.repo_name }}
         run: |
           git diff --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
 
       - name: Commit changes
         id: commit
         if: steps.changes.outputs.changed == 'true'
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/${{ env.repo_name }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
@@ -152,7 +153,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-          directory: ${{ github.workspace }}
+          directory: ${{ github.workspace }}/${{ env.repo_name }}
 
       - name: Clear workspace
         id: clearwork
