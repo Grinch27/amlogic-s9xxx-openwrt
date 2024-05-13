@@ -24,6 +24,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
+      actions: write
     steps:
       - name: Checkout source repo
         uses: actions/checkout@main
@@ -88,6 +89,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
+      actions: write
     steps:
       - name: Checkout source repo
         uses: actions/checkout@main
