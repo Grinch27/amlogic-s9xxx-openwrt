@@ -141,7 +141,7 @@ jobs:
               yaml.safe_dump(data, file)
           """
           cat ${{ env.TARGET_FILE }}
-          ls -R ./
+          ls -R ${{ github.workspace }}/.github/workflows
 
       - name: Check for changes
         id: changes
