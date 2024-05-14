@@ -385,7 +385,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y rename
-          rename "s/_[0-9]{4}.[0-9]{2}.[0-9]{2}//g" *.img.gz.*
+          rename "s/_[0-9]{4}.[0-9]{2}.[0-9]{2}//g" *.img.gz*
 
       - name: Upload the packaged OpenWrt
         uses: ncipollo/release-action@main
