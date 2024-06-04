@@ -81,6 +81,11 @@ jobs:
       repository-projects: write
       actions: write
     steps:
+      - name: Set Git user
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
       - name: Checkout source repo
         uses: actions/checkout@main
         with:
@@ -104,22 +109,15 @@ jobs:
           cat ${{ env.TARGET_FILE }}
           ls -R ${{ github.workspace }}/.github/workflows
 
-      - name: Check for changes
-        id: changes
+      - name: Check and commit changes
+        id: commit
         working-directory: ${{ github.workspace }}
         run: |
           git add .
-          git diff --cached --quiet || echo "changed=true" >> ${GITHUB_OUTPUT}
-
-      - name: Commit changes
-        id: commit
-        if: steps.changes.outputs.changed == 'true'
-        working-directory: ${{ github.workspace }}
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git commit -m "DIY files"
-          echo "status=success" >> ${GITHUB_OUTPUT}
+          if ! git diff --cached --quiet; then
+            git commit -m "DIY files"
+            echo "status=success" >> ${GITHUB_OUTPUT}
+          fi
 
       - name: Push changes
         id: push
