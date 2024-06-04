@@ -91,6 +91,10 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
 
+      - name: Pull latest changes
+        run: |
+          git pull origin main
+
       - name: Generate DIY Workflow
         working-directory: ${{ github.workspace }}
         env:
