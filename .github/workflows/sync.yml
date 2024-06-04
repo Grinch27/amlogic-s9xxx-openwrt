@@ -36,12 +36,7 @@ jobs:
         run: |
           git remote add upstream https://github.com/${{ env.repo_upstream }}
           git fetch upstream
-          git merge upstream/main --strategy-option theirs
-
-      #       - name: Checkout source repo
-      #         uses: actions/checkout@main
-      #         with:
-      #           token: ${{ secrets.PAT }}
+          git merge upstream/main --allow-unrelated-histories --strategy-option theirs
 
       - name: Overwrite specific folder
         id: overwrite
