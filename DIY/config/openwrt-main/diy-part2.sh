@@ -9,7 +9,7 @@
 # ------------------------------- Main source started -------------------------------
 #
 # Add the default password for the 'root' user（Change the empty password to 'password'）
-sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
+# sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
 
 # Set etc/openwrt_release
 sed -i "s|DISTRIB_REVISION='.*'|DISTRIB_REVISION='R$(date +%Y.%m.%d)'|g" package/base-files/files/etc/openwrt_release
@@ -26,10 +26,10 @@ echo "DISTRIB_SOURCECODE='official'" >>package/base-files/files/etc/openwrt_rele
 rm -rf package/luci-app-amlogic
 git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 
-# Modify luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
-sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
-sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
-cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
+# Modify luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
 
 #
 # Apply patch
