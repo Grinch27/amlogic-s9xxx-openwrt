@@ -25,6 +25,12 @@ echo "DISTRIB_SOURCECODE='official'" >>package/base-files/files/etc/openwrt_rele
 # Add luci-app-amlogic
 rm -rf package/luci-app-amlogic
 git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
+
+# Modify luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
+sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
+sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
+cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-update-amlogic
+
 #
 # Apply patch
 # git apply ../config/patches/{0001*,0002*}.patch --directory=feeds/luci
@@ -32,8 +38,6 @@ git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 # ------------------------------- Other ends -------------------------------
 
 # ------------------------------- DIY -------------------------------
-
-# luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
 
 # Add luci-app-adguardhome
 rm -rf package/luci-app-adguardhome
