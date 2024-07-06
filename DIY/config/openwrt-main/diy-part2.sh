@@ -27,9 +27,9 @@ rm -rf package/luci-app-amlogic
 git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 
 # Modify luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
-sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
-sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
-cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+# sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+# sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+# cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
 
 #
 # Apply patch
@@ -241,6 +241,12 @@ CONFIG_PACKAGE_luci-app-squid=y
 CONFIG_PACKAGE_squid=y
 " >> .config
 
+# privoxy
+echo "
+CONFIG_PACKAGE_luci-app-privoxy=y
+CONFIG_PACKAGE_privoxy=y
+" >> .config
+
 # iperf3
 echo "
 CONFIG_PACKAGE_iperf=n
@@ -252,12 +258,12 @@ CONFIG_PACKAGE_iperf3-ssl=n
 echo "
 CONFIG_PACKAGE_6in4=y
 CONFIG_PACKAGE_block-mount=y
-CONFIG_PACKAGE_kmod-crypto-arc4=y
-CONFIG_PACKAGE_kmod-crypto-ecb=y
+# CONFIG_PACKAGE_kmod-crypto-arc4=n
+# CONFIG_PACKAGE_kmod-crypto-ecb=n
 CONFIG_PACKAGE_kmod-crypto-user=y
 CONFIG_PACKAGE_kmod-cryptodev=y
 CONFIG_PACKAGE_kmod-macvlan=y
-CONFIG_PACKAGE_kmod-mppe=y
+# CONFIG_PACKAGE_kmod-mppe=n
 CONFIG_PACKAGE_kmod-sit=y
 " >> .config
 
