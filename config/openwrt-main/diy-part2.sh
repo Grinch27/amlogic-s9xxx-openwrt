@@ -27,9 +27,9 @@ rm -rf package/luci-app-amlogic
 git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 
 # Modify luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
-sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
-sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
-cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+# sed -i 's/ROOT1="960"/ROOT1="512"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+# sed -i 's/ROOT2="960"/ROOT2="1"/g' package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
+# cat package/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-install-amlogic
 
 #
 # Apply patch
@@ -239,6 +239,12 @@ CONFIG_PACKAGE_udpxy=y
 echo "
 CONFIG_PACKAGE_luci-app-squid=y
 CONFIG_PACKAGE_squid=y
+" >> .config
+
+# privoxy
+echo "
+CONFIG_PACKAGE_luci-app-privoxy=y
+CONFIG_PACKAGE_privoxy=y
 " >> .config
 
 # iperf3
