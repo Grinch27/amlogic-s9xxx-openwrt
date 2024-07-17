@@ -106,10 +106,10 @@ CONFIG_PACKAGE_libustream-wolfssl=n
 " >> .config
 
 # swconfig
-echo "
-CONFIG_PACKAGE_swconfig=y
-CONFIG_PACKAGE_kmod-swconfig=y
-" >> .config
+# echo "
+# CONFIG_PACKAGE_swconfig=y
+# CONFIG_PACKAGE_kmod-swconfig=y
+# " >> .config
 
 # nftables, abort iptables & xtables
 echo "
@@ -152,10 +152,6 @@ CONFIG_PACKAGE_bridge=y
 # openssl
 echo "
 CONFIG_PACKAGE_openssl-util=y
-" >> .config
-
-echo "
-
 " >> .config
 
 # ---------- install ----------
