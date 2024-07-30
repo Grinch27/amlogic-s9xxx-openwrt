@@ -215,9 +215,9 @@ CONFIG_PACKAGE_tcpdump=y
 " >> .config
 
 # fail2ban
-echo "
-CONFIG_PACKAGE_fail2ban=y
-" >> .config
+# echo "
+# CONFIG_PACKAGE_fail2ban=y
+# " >> .config
 
 # https-dns-proxy
 echo "
@@ -372,7 +372,7 @@ EOF
         cat "$patch_target"
     else
         echo "Failed to apply patch."
-        echo "Checking .rej file for details..."
+        echo "Checking $patch_target.rej for details..."
         if [ -f "$patch_target.rej" ]; then
             echo "Contents of $file_rej:"
             cat "$patch_target.rej"
