@@ -341,6 +341,7 @@ apply_dockerd_patch() {
      +kmod-veth \
      +tini \
      +uci-firewall \
+
 EOF
     if [ -f "$patch_file" ]; then
         echo "Patch file created successfully."
@@ -372,13 +373,11 @@ EOF
         cat "$patch_target"
     else
         echo "Failed to apply patch."
-        echo "Checking $patch_target.rej for details..."
-        if [ -f "$patch_target.rej" ]; then
-            echo "Contents of $file_rej:"
-            cat "$patch_target.rej"
-        else
-            echo "No .rej file found."
-        fi
+        echo "Checking for .rej files in the current directory..."
+        find . -name "*.rej" -print0 | while IFS= read -r -d '' rej_file; do
+            echo "Contents of $rej_file:"
+            cat "$rej_file"
+        done
         return 1
     fi
 }
