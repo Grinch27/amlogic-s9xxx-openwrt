@@ -324,9 +324,9 @@ apply_dockerd_patch() {
 
     # 生成补丁文件内容并写入补丁文件
     echo "Creating patch file at $patch_file"
-    cat << EOF > "$patch_file"
---- a/$patch_target
-+++ b/$patch_target
+    cat << 'EOF' > "$patch_file"
+--- a/feeds/packages/utils/dockerd/Makefile
++++ b/feeds/packages/utils/dockerd/Makefile
 @@ -31,6 +31,0 @@ define Package/dockerd
      +ca-certificates \
      +containerd \
@@ -341,14 +341,13 @@ apply_dockerd_patch() {
      +kmod-veth \
      +tini \
      +uci-firewall \
-
 EOF
     if [ -f "$patch_file" ]; then
         echo "Patch file created successfully."
         cat "$patch_file"
     else
         echo "Failed to create patch file."
-        return 1
+        exit 1
     fi
 
     # 切换回原来的工作目录
@@ -360,7 +359,7 @@ EOF
         ls -lh .
     else
         echo "Failed to return to the original directory."
-        return 1
+        exit 1
     fi
     
     # 应用补丁
@@ -382,7 +381,7 @@ EOF
                 echo "No .rej file found."
             fi
         done
-        return 1
+        exit 1
     fi
 }
 apply_dockerd_patch
