@@ -306,6 +306,7 @@ if [ "$PWD" != "$DIR" ]; then
     echo "Changing working directory to $DIR"
     cd "$DIR"
     echo -e "Current working directory: $(pwd)"
+    ls -lh .
 fi
 
 # 创建/patches文件夹（如果不存在）
@@ -354,13 +355,23 @@ cd "$ORIGINAL_DIR"
 if [ $? -eq 0 ]; then
     echo "Returned to the original directory successfully."
     echo -e "Current working directory: $(pwd)"
+    ls -lh .
 else
     echo "Failed to return to the original directory."
     exit 1
 fi
 
-# 进入./openwrt目录
-cd ./openwrt
+# 进入feeds目录
+PATH_TO_PATCH="./feeds/"
+cd "$PATH_TO_PATCH"
+if [ $? -ne 0 ]; then
+    echo "change directory to $PATH_TO_PATCH"
+    echo -e "Current working directory: $(pwd)"
+    ls -lh .
+else
+    echo "Failed to change directory to $PATH_TO_PATCH"
+    exit 1
+fi
 
 # 应用补丁
 echo "Applying patch $PATCH_FILE_ABS_PATH"
