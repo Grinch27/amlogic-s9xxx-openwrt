@@ -322,8 +322,8 @@ PATCH_FILE="$PATCH_DIR/0001-remove-dockerd-iptables-dependencies.patch"
 # 生成补丁文件内容并写入补丁文件
 echo "Creating patch file at $PATCH_FILE"
 cat << 'EOF' > "$PATCH_FILE"
---- a/packages/utils/dockerd/Makefile
-+++ b/packages/utils/dockerd/Makefile
+--- a/feeds/packages/utils/dockerd/Makefile
++++ b/feeds/packages/utils/dockerd/Makefile
 @@ -30,11 +30,5 @@ define Package/dockerd
      +ca-certificates \
      +containerd \
@@ -358,18 +358,6 @@ if [ $? -eq 0 ]; then
     ls -lh .
 else
     echo "Failed to return to the original directory."
-    exit 1
-fi
-
-# 进入feeds目录
-PATH_TO_PATCH="./feeds"
-cd "$PATH_TO_PATCH"
-if [ $? -ne 0 ]; then
-    echo "change directory to $PATH_TO_PATCH"
-    echo -e "Current working directory: $(pwd)"
-    ls -lh .
-else
-    echo "Failed to change directory to $PATH_TO_PATCH"
     exit 1
 fi
 
