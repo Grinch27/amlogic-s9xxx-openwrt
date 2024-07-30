@@ -361,20 +361,21 @@ EOF
         echo "Failed to return to the original directory."
         return 1
     fi
-
+    
     # 应用补丁
-    cat "./$patch_target"
+    patch_target="$(realpath "$patch_target")"
+    cat "$patch_target"
     echo "Applying patch $patch_file"
     patch -p1 < "$patch_file"
     if [ $? -eq 0 ]; then
         echo "Patch applied successfully."
-        cat "./$patch_target"
+        cat "$patch_target"
     else
         echo "Failed to apply patch."
         echo "Checking .rej file for details..."
-        if [ -f "./$patch_target.rej" ]; then
+        if [ -f "$patch_target.rej" ]; then
             echo "Contents of $file_rej:"
-            cat "./$patch_target.rej"
+            cat "$patch_target.rej"
         else
             echo "No .rej file found."
         fi
