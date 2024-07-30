@@ -322,7 +322,7 @@ echo "Creating patch file at $PATCH_FILE"
 cat << 'EOF' > "$PATCH_FILE"
 --- a/packages/utils/dockerd/Makefile
 +++ b/packages/utils/dockerd/Makefile
-@@ -13,9 +13,5 @@ define Package/dockerd
+@@ -30,11 +30,5 @@ define Package/dockerd
      +ca-certificates \
      +containerd \
      +KERNEL_SECCOMP:libseccomp \
@@ -347,10 +347,13 @@ else
     exit 1
 fi
 
-# 进入openwrt目录
-cd openwrt/
-if [ $? -ne 0 ]; then
-    echo "Failed to change directory to openwrt/"
+# 切换回原来的工作目录
+echo "Changing back to the original directory $ORIGINAL_DIR"
+cd "$ORIGINAL_DIR"
+if [ $? -eq 0 ]; then
+    echo "Returned to the original directory successfully."
+else
+    echo "Failed to return to the original directory."
     exit 1
 fi
 
@@ -361,16 +364,6 @@ if [ $? -eq 0 ]; then
     echo "Patch applied successfully."
 else
     echo "Failed to apply patch."
-    exit 1
-fi
-
-# 切换回原来的工作目录
-echo "Changing back to the original directory $ORIGINAL_DIR"
-cd "$ORIGINAL_DIR"
-if [ $? -eq 0 ]; then
-    echo "Returned to the original directory successfully."
-else
-    echo "Failed to return to the original directory."
     exit 1
 fi
 
