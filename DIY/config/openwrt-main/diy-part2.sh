@@ -362,12 +362,22 @@ else
 fi
 
 # 应用补丁
+cat "./feeds/packages/utils/dockerd/Makefile"
 echo "Applying patch $PATCH_FILE_ABS_PATH"
 patch -p1 < "$PATCH_FILE_ABS_PATH"
 if [ $? -eq 0 ]; then
     echo "Patch applied successfully."
+    cat "./feeds/packages/utils/dockerd/Makefile"
 else
     echo "Failed to apply patch."
+    echo "Checking .rej file for details..."
+    REJ_FILE="feeds/packages/utils/dockerd/Makefile.rej"
+    if [ -f "$REJ_FILE" ]; then
+        echo "Contents of $REJ_FILE:"
+        cat "$REJ_FILE"
+    else
+        echo "No .rej file found."
+    fi
     exit 1
 fi
 
