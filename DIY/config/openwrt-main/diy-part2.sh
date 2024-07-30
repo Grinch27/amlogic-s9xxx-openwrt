@@ -299,32 +299,33 @@ CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 
 
 # ----- dockerd remove iptables -----
-# 获取脚本的目录，检查当前工作目录是否为脚本目录
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ORIGINAL_DIR="$PWD"
-if [ "$PWD" != "$DIR" ]; then
-    echo "Changing working directory to $DIR"
-    cd "$DIR"
-    echo -e "Current working directory: $(pwd)"
-    ls -lh .
-fi
+apply_dockerd_patch() {
+    # 获取脚本的目录，检查当前工作目录是否为脚本目录
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    ORIGINAL_DIR="$PWD"
+    if [ "$PWD" != "$DIR" ]; then
+        echo "Changing working directory to $DIR"
+        cd "$DIR"
+        echo -e "Current working directory: $(pwd)"
+        ls -lh .
+    fi
 
-# 创建/patches文件夹（如果不存在）
-PATCH_DIR="$DIR/patches"
-if [ ! -d "$PATCH_DIR" ]; then
-    echo "Creating directory $PATCH_DIR"
-    mkdir -p "$PATCH_DIR"
-fi
+    # 创建/patches文件夹（如果不存在）
+    PATCH_DIR="$DIR/patches"
+    if [ ! -d "$PATCH_DIR" ]; then
+        echo "Creating directory $PATCH_DIR"
+        mkdir -p "$PATCH_DIR"
+    fi
 
-# 定义补丁文件的路径
-PATCH_FILE="$PATCH_DIR/0001-remove-dockerd-iptables-dependencies.patch"
+    # 定义补丁文件的路径
+    PATCH_FILE="$PATCH_DIR/0001-remove-dockerd-iptables-dependencies.patch"
 
-# 生成补丁文件内容并写入补丁文件
-echo "Creating patch file at $PATCH_FILE"
-cat << 'EOF' > "$PATCH_FILE"
+    # 生成补丁文件内容并写入补丁文件
+    echo "Creating patch file at $PATCH_FILE"
+    cat << 'EOF' > "$PATCH_FILE"
 --- a/feeds/packages/utils/dockerd/Makefile
 +++ b/feeds/packages/utils/dockerd/Makefile
-@@ -30,11 +30,5 @@ define Package/dockerd
+@@ -31,6 +31,0 @@ define Package/dockerd
      +ca-certificates \
      +containerd \
      +KERNEL_SECCOMP:libseccomp \
@@ -340,46 +341,48 @@ cat << 'EOF' > "$PATCH_FILE"
      +uci-firewall \
 EOF
 
-# 获取补丁文件的绝对路径 检查补丁文件是否成功创建
-PATCH_FILE_ABS_PATH="$(realpath "$PATCH_FILE")"
-if [ -f "$PATCH_FILE_ABS_PATH" ]; then
-    echo "Patch file created successfully."
-else
-    echo "Failed to create patch file."
-    exit 1
-fi
-
-# 切换回原来的工作目录
-echo "Changing back to the original directory $ORIGINAL_DIR"
-cd "$ORIGINAL_DIR"
-if [ $? -eq 0 ]; then
-    echo "Returned to the original directory successfully."
-    echo -e "Current working directory: $(pwd)"
-    ls -lh .
-else
-    echo "Failed to return to the original directory."
-    exit 1
-fi
-
-# 应用补丁
-cat "./feeds/packages/utils/dockerd/Makefile"
-echo "Applying patch $PATCH_FILE_ABS_PATH"
-patch -p1 < "$PATCH_FILE_ABS_PATH"
-if [ $? -eq 0 ]; then
-    echo "Patch applied successfully."
-    cat "./feeds/packages/utils/dockerd/Makefile"
-else
-    echo "Failed to apply patch."
-    echo "Checking .rej file for details..."
-    REJ_FILE="feeds/packages/utils/dockerd/Makefile.rej"
-    if [ -f "$REJ_FILE" ]; then
-        echo "Contents of $REJ_FILE:"
-        cat "$REJ_FILE"
+    # 获取补丁文件的绝对路径 检查补丁文件是否成功创建
+    PATCH_FILE_ABS_PATH="$(realpath "$PATCH_FILE")"
+    if [ -f "$PATCH_FILE_ABS_PATH" ]; then
+        echo "Patch file created successfully."
     else
-        echo "No .rej file found."
+        echo "Failed to create patch file."
+        return 1
     fi
-    exit 1
-fi
+
+    # 切换回原来的工作目录
+    echo "Changing back to the original directory $ORIGINAL_DIR"
+    cd "$ORIGINAL_DIR"
+    if [ $? -eq 0 ]; then
+        echo "Returned to the original directory successfully."
+        echo -e "Current working directory: $(pwd)"
+        ls -lh .
+    else
+        echo "Failed to return to the original directory."
+        return 1
+    fi
+
+    # 应用补丁
+    cat "./feeds/packages/utils/dockerd/Makefile"
+    echo "Applying patch $PATCH_FILE_ABS_PATH"
+    patch -p1 < "$PATCH_FILE_ABS_PATH"
+    if [ $? -eq 0 ]; then
+        echo "Patch applied successfully."
+        cat "./feeds/packages/utils/dockerd/Makefile"
+    else
+        echo "Failed to apply patch."
+        echo "Checking .rej file for details..."
+        REJ_FILE="feeds/packages/utils/dockerd/Makefile.rej"
+        if [ -f "$REJ_FILE" ]; then
+            echo "Contents of $REJ_FILE:"
+            cat "$REJ_FILE"
+        else
+            echo "No .rej file found."
+        fi
+        return 1
+    fi
+}
+apply_dockerd_patch
 
 # ---------- sync config ----------
 make oldconfig
