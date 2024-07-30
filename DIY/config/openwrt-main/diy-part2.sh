@@ -328,19 +328,19 @@ apply_dockerd_patch() {
 --- a/feeds/packages/utils/dockerd/Makefile
 +++ b/feeds/packages/utils/dockerd/Makefile
 @@ -31,6 +31,0 @@ define Package/dockerd
-     +ca-certificates \
-     +containerd \
-     +KERNEL_SECCOMP:libseccomp \
--    +iptables \
--    +iptables-mod-extra \
--    +IPV6:ip6tables \
--    +IPV6:kmod-ipt-nat6 \
--    +kmod-ipt-nat \
--    +kmod-ipt-physdev \
-     +kmod-nf-ipvs \
-     +kmod-veth \
-     +tini \
-     +uci-firewall \
+    +ca-certificates \
+    +containerd \
+    +KERNEL_SECCOMP:libseccomp \
+-   +iptables \
+-   +iptables-mod-extra \
+-   +IPV6:ip6tables \
+-   +IPV6:kmod-ipt-nat6 \
+-   +kmod-ipt-nat \
+-   +kmod-ipt-physdev \
+    +kmod-nf-ipvs \
+    +kmod-veth \
+    +tini \
+    +uci-firewall \
 EOF
     if [ -f "$patch_file" ]; then
         echo "Patch file created successfully."
