@@ -374,9 +374,13 @@ EOF
     else
         echo "Failed to apply patch."
         echo "Checking for .rej files in the current directory..."
-        find . -name "*.rej" -print0 | while IFS= read -r -d '' rej_file; do
-            echo "Contents of $rej_file:"
-            cat "$rej_file"
+        for rej_file in ./*.rej; do
+            if [ -e "$rej_file" ]; then
+                echo "Contents of $rej_file:"
+                cat "$rej_file"
+            else
+                echo "No .rej file found."
+            fi
         done
         return 1
     fi
