@@ -362,7 +362,7 @@ else
 fi
 
 # 进入feeds目录
-PATH_TO_PATCH="./feeds/"
+PATH_TO_PATCH="./feeds"
 cd "$PATH_TO_PATCH"
 if [ $? -ne 0 ]; then
     echo "change directory to $PATH_TO_PATCH"
