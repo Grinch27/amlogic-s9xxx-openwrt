@@ -318,6 +318,7 @@ apply_dockerd_patch_sed() {
     sed -i '/+IPV6:kmod-ipt-nat6 \\/d' "$patch_target"
     sed -i '/+kmod-ipt-nat \\/d' "$patch_target"
     sed -i '/+kmod-ipt-physdev \\/d' "$patch_target"
+    sed -i '/+kmod-nf-ipvs \\/d' "$patch_target"
 
     # 打印修改后的目标文件内容
     echo "Modified file content:"
