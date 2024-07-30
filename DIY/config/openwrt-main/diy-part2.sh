@@ -311,7 +311,7 @@ apply_dockerd_patch() {
     fi
 
     # 创建/patches文件夹（如果不存在）
-    local patch_dir="$dir_sh/patches"
+    local dir_patch="$dir_sh/patches"
     if [ ! -d "$dir_patch" ]; then
         echo "Creating directory $dir_patch"
         mkdir -p "$dir_patch"
@@ -325,8 +325,8 @@ apply_dockerd_patch() {
     # 生成补丁文件内容并写入补丁文件
     echo "Creating patch file at $patch_file"
     cat << EOF > "$patch_file"
---- a/$PATCH_TARGET
-+++ b/$PATCH_TARGET
+--- a/$patch_target
++++ b/$patch_target
 @@ -31,6 +31,0 @@ define Package/dockerd
      +ca-certificates \
      +containerd \
