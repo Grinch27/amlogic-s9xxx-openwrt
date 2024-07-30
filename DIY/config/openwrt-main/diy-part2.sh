@@ -301,30 +301,32 @@ CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 # ----- dockerd remove iptables -----
 apply_dockerd_patch() {
     # 获取脚本的目录，检查当前工作目录是否为脚本目录
-    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    ORIGINAL_DIR="$PWD"
-    if [ "$PWD" != "$DIR" ]; then
-        echo "Changing working directory to $DIR"
-        cd "$DIR"
+    local dir_original="$PWD"
+    local dir_sh="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    if [ "$PWD" != "$dir_sh" ]; then
+        echo "Changing working directory to $dir_sh"
+        cd "$dir_sh"
         echo -e "Current working directory: $(pwd)"
         ls -lh .
     fi
 
     # 创建/patches文件夹（如果不存在）
-    PATCH_DIR="$DIR/patches"
-    if [ ! -d "$PATCH_DIR" ]; then
-        echo "Creating directory $PATCH_DIR"
-        mkdir -p "$PATCH_DIR"
+    local patch_dir="$dir_sh/patches"
+    if [ ! -d "$dir_patch" ]; then
+        echo "Creating directory $dir_patch"
+        mkdir -p "$dir_patch"
     fi
 
-    # 定义补丁文件的路径
-    PATCH_FILE="$PATCH_DIR/0001-remove-dockerd-iptables-dependencies.patch"
+    # 定义补丁文件的绝对路径
+    local patch_name="0001-remove-dockerd-iptables-dependencies.patch"
+    local patch_file="$(realpath "$dir_patch/$patch_name")"
+    local patch_target="feeds/packages/utils/dockerd/Makefile"
 
     # 生成补丁文件内容并写入补丁文件
-    echo "Creating patch file at $PATCH_FILE"
-    cat << 'EOF' > "$PATCH_FILE"
---- a/feeds/packages/utils/dockerd/Makefile
-+++ b/feeds/packages/utils/dockerd/Makefile
+    echo "Creating patch file at $patch_file"
+    cat << EOF > "$patch_file"
+--- a/$PATCH_TARGET
++++ b/$PATCH_TARGET
 @@ -31,6 +31,0 @@ define Package/dockerd
      +ca-certificates \
      +containerd \
@@ -340,19 +342,17 @@ apply_dockerd_patch() {
      +tini \
      +uci-firewall \
 EOF
-
-    # 获取补丁文件的绝对路径 检查补丁文件是否成功创建
-    PATCH_FILE_ABS_PATH="$(realpath "$PATCH_FILE")"
-    if [ -f "$PATCH_FILE_ABS_PATH" ]; then
+    if [ -f "$patch_file" ]; then
         echo "Patch file created successfully."
+        cat "$patch_file"
     else
         echo "Failed to create patch file."
         return 1
     fi
 
     # 切换回原来的工作目录
-    echo "Changing back to the original directory $ORIGINAL_DIR"
-    cd "$ORIGINAL_DIR"
+    echo "Changing back to the original directory $dir_original"
+    cd "$dir_original"
     if [ $? -eq 0 ]; then
         echo "Returned to the original directory successfully."
         echo -e "Current working directory: $(pwd)"
@@ -363,19 +363,18 @@ EOF
     fi
 
     # 应用补丁
-    cat "./feeds/packages/utils/dockerd/Makefile"
-    echo "Applying patch $PATCH_FILE_ABS_PATH"
-    patch -p1 < "$PATCH_FILE_ABS_PATH"
+    cat "./$patch_target"
+    echo "Applying patch $patch_file"
+    patch -p1 < "$patch_file"
     if [ $? -eq 0 ]; then
         echo "Patch applied successfully."
-        cat "./feeds/packages/utils/dockerd/Makefile"
+        cat "./$patch_target"
     else
         echo "Failed to apply patch."
         echo "Checking .rej file for details..."
-        REJ_FILE="feeds/packages/utils/dockerd/Makefile.rej"
-        if [ -f "$REJ_FILE" ]; then
-            echo "Contents of $REJ_FILE:"
-            cat "$REJ_FILE"
+        if [ -f "./$patch_target.rej" ]; then
+            echo "Contents of $file_rej:"
+            cat "./$patch_target.rej"
         else
             echo "No .rej file found."
         fi
@@ -383,6 +382,7 @@ EOF
     fi
 }
 apply_dockerd_patch
+
 
 # ---------- sync config ----------
 make oldconfig
