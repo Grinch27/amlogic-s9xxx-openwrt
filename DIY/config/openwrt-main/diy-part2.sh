@@ -305,11 +305,11 @@ CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 # kmod-ipt-extra
 # kmod-ipt-tproxy
 # kmod-ipt-physdev
-# kmod-ipt-ipset
 # kmod-nf-ipt
 # kmod-nf-ipt6
 # kmod-br-netfilter
 # kmod-ip6tables
+# kmod-ipt-ipset
 # ipset
 # libipset13
 # kmod-nft-compat
@@ -322,7 +322,6 @@ CONFIG_PACKAGE_kmod-ipt-nat6=n
 CONFIG_PACKAGE_kmod-ipt-extra=n
 CONFIG_PACKAGE_kmod-ipt-tproxy=n
 CONFIG_PACKAGE_kmod-ipt-physdev=n
-CONFIG_PACKAGE_kmod-ipt-ipset=n
 CONFIG_PACKAGE_kmod-nf-ipt=n
 CONFIG_PACKAGE_kmod-nf-ipt6=n
 CONFIG_PACKAGE_kmod-nf-ipvs=n
