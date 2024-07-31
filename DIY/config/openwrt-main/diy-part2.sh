@@ -296,6 +296,44 @@ CONFIG_PACKAGE_luci-app-openvpn=n
 CONFIG_PACKAGE_luci-i18n-openvpn-zh-cn=n
 " >> .config
 
+# 删除iptables ip6tables
+# ----- opkg whatdepends -----
+# kmod-ipt-core
+# kmod-ipt-conntrack
+# kmod-ipt-nat
+# kmod-ipt-nat6
+# kmod-ipt-extra
+# kmod-ipt-tproxy
+# kmod-ipt-physdev
+# kmod-ipt-ipset
+# kmod-nf-ipt
+# kmod-nf-ipt6
+# kmod-br-netfilter
+# kmod-ip6tables
+# ipset
+# libipset13
+# kmod-nft-compat
+echo "
+CONFIG_PACKAGE_kmod-ipt-core=n
+CONFIG_PACKAGE_kmod-ipt-conntrack=n
+CONFIG_PACKAGE_kmod-ipt-nat=n
+CONFIG_PACKAGE_kmod-ipt-nat-extra=n
+CONFIG_PACKAGE_kmod-ipt-nat6=n
+CONFIG_PACKAGE_kmod-ipt-extra=n
+CONFIG_PACKAGE_kmod-ipt-tproxy=n
+CONFIG_PACKAGE_kmod-ipt-physdev=n
+CONFIG_PACKAGE_kmod-ipt-ipset=n
+CONFIG_PACKAGE_kmod-nf-ipt=n
+CONFIG_PACKAGE_kmod-nf-ipt6=n
+CONFIG_PACKAGE_kmod-nf-ipvs=n
+CONFIG_PACKAGE_kmod-br-netfilter=n
+CONFIG_PACKAGE_kmod-ip6tables=n
+CONFIG_PACKAGE_kmod-ip6tables-extra=n
+CONFIG_PACKAGE_ipset=n
+CONFIG_PACKAGE_kmod-ipt-ipset=n
+CONFIG_PACKAGE_libipset=n
+CONFIG_PACKAGE_kmod-nft-compat=n
+" >> .config
 
 
 # ----- dockerd remove iptables -----
@@ -325,100 +363,6 @@ apply_dockerd_patch_sed() {
     cat "$patch_target"
 }
 apply_dockerd_patch_sed
-
-# apply_dockerd_patch() {
-#     # 获取脚本的目录，检查当前工作目录是否为脚本目录
-#     local dir_original="$PWD"
-#     local dir_sh="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-#     if [ "$PWD" != "$dir_sh" ]; then
-#         echo "Changing working directory to $dir_sh"
-#         cd "$dir_sh"
-#         echo -e "Current working directory: $(pwd)"
-#         ls -lh .
-#     fi
-
-#     # 创建/patches文件夹（如果不存在）
-#     local dir_patch="$dir_sh/patches"
-#     if [ ! -d "$dir_patch" ]; then
-#         echo "Creating directory $dir_patch"
-#         mkdir -p "$dir_patch"
-#     fi
-
-#     # 定义补丁文件的绝对路径
-#     local patch_name="0001-remove-dockerd-iptables-dependencies.patch"
-#     local patch_file="$(realpath "$dir_patch/$patch_name")"
-#     local patch_target="feeds/packages/utils/dockerd/Makefile"
-
-#     # 生成补丁文件内容并写入补丁文件
-#     echo "Creating patch file at $patch_file"
-#     cat << 'EOF' > "$patch_file"
-# --- a/feeds/packages/utils/dockerd/Makefile
-# +++ b/feeds/packages/utils/dockerd/Makefile
-# @@ -31,6 +31,0 @@ define Package/dockerd
-#       SECTION:=utils
-#   CATEGORY:=Utilities
-#   TITLE:=Docker Community Edition Daemon
-#   URL:=https://www.docker.com/
-#   DEPENDS:=$(GO_ARCH_DEPENDS) \
-#     +ca-certificates \
-#     +containerd \
-#     +KERNEL_SECCOMP:libseccomp \
-# -   +iptables \
-# -   +iptables-mod-extra \
-# -   +IPV6:ip6tables \
-# -   +IPV6:kmod-ipt-nat6 \
-# -   +kmod-ipt-nat \
-# -   +kmod-ipt-physdev \
-#     +kmod-nf-ipvs \
-#     +kmod-veth \
-#     +tini \
-#     +uci-firewall \
-
-
-# EOF
-#     if [ -f "$patch_file" ]; then
-#         echo "Patch file created successfully."
-#         cat "$patch_file"
-#     else
-#         echo "Failed to create patch file."
-#         exit 1
-#     fi
-
-#     # 切换回原来的工作目录
-#     echo "Changing back to the original directory $dir_original"
-#     cd "$dir_original"
-#     if [ $? -eq 0 ]; then
-#         echo "Returned to the original directory successfully."
-#         echo -e "Current working directory: $(pwd)"
-#         ls -lh .
-#     else
-#         echo "Failed to return to the original directory."
-#         exit 1
-#     fi
-    
-#     # 应用补丁
-#     patch_target="$(realpath "$patch_target")"
-#     cat "$patch_target"
-#     echo "Applying patch $patch_file"
-#     patch -p1 < "$patch_file"
-#     if [ $? -eq 0 ]; then
-#         echo "Patch applied successfully."
-#         cat "$patch_target"
-#     else
-#         echo "Failed to apply patch."
-#         echo "Checking for .rej files in the current directory..."
-#         for rej_file in ./*.rej; do
-#             if [ -e "$rej_file" ]; then
-#                 echo "Contents of $rej_file:"
-#                 cat "$rej_file"
-#             else
-#                 echo "No .rej file found."
-#             fi
-#         done
-#         exit 1
-#     fi
-# }
-# apply_dockerd_patch
 
 
 # ---------- sync config ----------
