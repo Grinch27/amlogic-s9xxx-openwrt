@@ -118,6 +118,7 @@ jobs:
           # 删除特定行
           sed -i -r '/docker rmi.*/d' "${{ env.TARGET_FILE }}"
           sed -i -r '/.*AGENT_TOOLSDIRECTORY.*/d' "${{ env.TARGET_FILE }}"
+          sed -i -r '/sudo rm.*sources.list.d.*/d' "${{ env.TARGET_FILE }}"
           sed -i -r '/sudo swapoff.*/d' "${{ env.TARGET_FILE }}"
           sed -i -r '/sudo rm -f .swapfile.*/d' "${{ env.TARGET_FILE }}"
           sed -i -r '/sudo -E apt-get -y purge.*/d' "${{ env.TARGET_FILE }}"
