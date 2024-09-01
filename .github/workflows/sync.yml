@@ -118,8 +118,6 @@ jobs:
           sed -i -r 's|^\s*(sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null)|# \1|' ${{ env.TARGET_FILE }}
           sed -i -r 's|^\s*(sudo swapoff -a)|# \1|' ${{ env.TARGET_FILE }}
           sed -i -r 's|^\s*(sudo rm -f /swapfile /mnt/swapfile)|# \1|' ${{ env.TARGET_FILE }}
-          sed -i -r 's|^\s*(sudo -E apt-get -y update)|# \1|' ${{ env.TARGET_FILE }}
-          sed -i -r 's|^\s*(sudo -E apt-get -y purge azure-cli ghc\* zulu\* llvm\* firefox google\* dotnet\* powershell openjdk\* mongodb\* moby\* \|\| true)|# \1|' ${{ env.TARGET_FILE }}
 
           cat ${{ env.TARGET_FILE }}
           ls -R ${{ github.workspace }}/.github/workflows
