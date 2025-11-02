@@ -155,6 +155,7 @@ sudo apt-get install -y $(cat make-openwrt/scripts/ubuntu2404-make-openwrt-depen
     openwrt_path: openwrt/bin/targets/*/*/*rootfs.tar.gz
     openwrt_board: s905x3_s905x2_s905x_s905w_s905d_s922x_s912
     openwrt_kernel: 6.1.y_5.15.y
+    openwrt_ip: 192.168.1.1
 ```
 
 - ### GitHub Actions 输入参数说明
