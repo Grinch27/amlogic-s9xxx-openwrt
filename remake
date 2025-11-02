@@ -978,8 +978,8 @@ refactor_rootfs() {
     mkdir -p .reserved boot run
 
     # Set default IP address
-    [[ -f "bin/config_generate" ]] && {
-        sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"/\${ipaddr:-\"${openwrt_ip}\"/" bin/config_generate
+    [[ "${openwrt_ip}" != "192.168.1.1" && -f "bin/config_generate" ]] && {
+        sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${openwrt_ip}\"}/" bin/config_generate
     }
 
     # Edit fstab
