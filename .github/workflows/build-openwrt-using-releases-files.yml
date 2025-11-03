@@ -27,8 +27,8 @@ on:
         type: choice
         options:
           - all
-          - top50
-          - rest50
+          - top55
+          - after55
           - a311d-oes_s905d_s905x3_s922x-ct2000_wxy-oect
           - a311d
           - a311d-oes
@@ -228,6 +228,10 @@ on:
           - flippy
           - dev
           - beta
+      openwrt_ip:
+        description: "Set OpenWrt default IP address."
+        required: false
+        default: "192.168.1.1"
       openwrt_storage:
         description: "Select image storage type."
         required: false
@@ -296,11 +300,23 @@ jobs:
           sudo pvcreate /dev/loop7
           sudo vgcreate github /dev/loop6 /dev/loop7
           sudo lvcreate -n runner -l 100%FREE github
-          sudo mkfs.xfs /dev/github/runner
+          sudo mkfs.xfs -f -i sparse=0 -b size=4096 /dev/github/runner
           sudo mkdir -p /builder
           sudo mount /dev/github/runner /builder
-          sudo chown -R runner.runner /builder
+          sudo chown -R runner:runner /builder
+          # Prepare cached directory
+          echo "Preparing cached directory..."
+          sudo cp -af /home/runner/actions-runner/cached /builder/cached
+          rm -rf /home/runner/actions-runner/cached
+          sudo ln -sf /builder/cached /home/runner/actions-runner/cached
+          echo "_diag directory content:"
+          ls -lh /home/runner/actions-runner/cached/_diag/ 2>/dev/null
+          echo "Verifying the symbolic link..."
+          ls -ld /home/runner/actions-runner/cached
+          df -Th /home/runner/actions-runner/cached
+          echo "Server disk layout:"
           df -Th
+          echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Download OpenWrt [ ${{ inputs.source_branch }} ]
         id: down
@@ -324,13 +340,13 @@ jobs:
 
           armsr_tarfile_path="openwrt/output"
           [[ -d "${armsr_tarfile_path}" ]] || mkdir -p ${armsr_tarfile_path}
-          ln -sf /builder/openwrt ${GITHUB_WORKSPACE}/openwrt
+          ln -sf /builder/openwrt ${{ github.workspace }}/openwrt
           ln -sf /builder/openwrt /home/runner/work/_actions/ophub/amlogic-s9xxx-openwrt/main/openwrt
 
           latest_version=$(curl -s \
                 -H "Accept: application/vnd.github+json" \
                 -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                https://api.github.com/repos/${GITHUB_REPOSITORY}/releases?per_page=100 | \
+                https://api.github.com/repos/${{ github.repository }}/releases?per_page=100 | \
                 jq -r --arg RTK "OpenWrt_${{ inputs.source_branch }}_" \
                 --arg BOARD "-rootfs.tar.gz" \
                 '[.[] | select(.tag_name | contains($RTK))] |
@@ -360,6 +376,7 @@ jobs:
         uses: ophub/amlogic-s9xxx-openwrt@main
         with:
           openwrt_path: openwrt/output/*rootfs.tar.gz
+          openwrt_ip: ${{ inputs.openwrt_ip }}
           openwrt_board: ${{ inputs.openwrt_board }}
           openwrt_kernel: ${{ inputs.openwrt_kernel }}
           auto_kernel: ${{ inputs.auto_kernel }}

@@ -8,6 +8,17 @@
 
 # ------------------------------- Main source started -------------------------------
 #
+# Set default IP address
+default_ip="192.168.1.1"
+ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+# Modify default IP if an argument is provided and it matches the IP format
+[[ -n "${1}" && "${1}" =~ ${ip_regex} ]] && default_ip="${1}"
+# Modify default IP address
+[[ "${default_ip}" != "192.168.1.1" && -f "package/base-files/files/bin/config_generate" ]] && {
+    echo "Modify default IP address to: ${default_ip}"
+    sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${default_ip}\"}/" package/base-files/files/bin/config_generate
+}
+
 # Modify default theme（FROM uci-theme-bootstrap CHANGE TO luci-theme-material）
 # sed -i 's/luci-theme-bootstrap/luci-theme-material/g' ./feeds/luci/collections/luci/Makefile
 
@@ -19,12 +30,6 @@ sed -i "s|DISTRIB_REVISION='.*'|DISTRIB_REVISION='R$(date +%Y.%m.%d)'|g" package
 echo "DISTRIB_SOURCEREPO='github.com/coolsnowwolf/lede'" >>package/base-files/files/etc/openwrt_release
 echo "DISTRIB_SOURCECODE='lede'" >>package/base-files/files/etc/openwrt_release
 echo "DISTRIB_SOURCEBRANCH='master'" >>package/base-files/files/etc/openwrt_release
-
-# Modify default IP（FROM 192.168.1.1 CHANGE TO 192.168.31.4）
-# sed -i 's/192.168.1.1/192.168.31.4/g' package/base-files/files/bin/config_generate
-
-# Replace the default software source
-# sed -i 's#openwrt.proxy.ustclug.org#mirrors.bfsu.edu.cn\\/openwrt#' package/lean/default-settings/files/zzz-default-settings
 #
 # ------------------------------- Main source ends -------------------------------
 
