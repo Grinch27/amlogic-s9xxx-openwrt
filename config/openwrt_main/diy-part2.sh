@@ -12,11 +12,9 @@
 default_ip="192.168.1.1"
 ip_regex="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 # Modify default IP if an argument is provided and it matches the IP format
-[[ -n "${1}" && "${1}" =~ ${ip_regex} ]] && default_ip="${1}"
-# Modify default IP address
-[[ "${default_ip}" != "192.168.1.1" && -f "package/base-files/files/bin/config_generate" ]] && {
-    echo "Modify default IP address to: ${default_ip}"
-    sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${default_ip}\"}/" package/base-files/files/bin/config_generate
+[[ -n "${1}" && "${1}" != "${default_ip}" && "${1}" =~ ${ip_regex} ]] && {
+    echo "Modify default IP address to: ${1}"
+    sed -i "/lan) ipad=\${ipaddr:-/s/\${ipaddr:-\"[^\"]*\"}/\${ipaddr:-\"${1}\"}/" package/base-files/files/bin/config_generate
 }
 
 # Add the default password for the 'root' user（Change the empty password to 'password'）
