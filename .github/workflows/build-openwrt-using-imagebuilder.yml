@@ -35,7 +35,8 @@ on:
           - all
           - top55
           - after55
-          - a311d-oes_s905d_s905x3_s922x-ct2000_wxy-oect
+          - a311d-oes_s922x-oes-plus_wxy-oect
+          - s905d_s905x3_s912_s922x-ct2000
           - a311d
           - a311d-oes
           - alark35-3500
@@ -83,7 +84,6 @@ on:
           - r68s
           - renegade-rk3328
           - rk3318-box
-          - rock-4d
           - rock5b
           - rock5c
           - ruisen-box
@@ -340,6 +340,7 @@ jobs:
           allowUpdates: true
           removeArtifacts: false
           replacesArtifacts: true
+          makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Packaging OpenWrt
@@ -364,6 +365,7 @@ jobs:
           allowUpdates: true
           removeArtifacts: false
           replacesArtifacts: true
+          makeLatest: true
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ### OpenWrt Image information
