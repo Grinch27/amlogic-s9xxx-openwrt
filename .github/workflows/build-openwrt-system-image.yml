@@ -37,6 +37,7 @@ on:
           - alark35-3500
           - anas3035
           - aio-3399b
+          - bdkj-bd-one
           - bdy-g18-pro
           - beikeyun
           - chainedbox
@@ -73,9 +74,9 @@ on:
           - lx-r3s
           - lz-k3568
           - mrkaio-m68s
+          - nanopc-t4
           - nanopc-t6
           - nanopi-m5
-          - nanopi-r3s
           - nanopi-r5c
           - nanopi-r5s
           - nsy-g16-plus
