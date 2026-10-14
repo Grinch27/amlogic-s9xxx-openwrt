@@ -16,12 +16,12 @@ env:
   repo_upstream: ophub/amlogic-s9xxx-openwrt
   specific_folder: ${{ inputs.specific_folder || 'DIY' }}
 
+permissions: write-all
+
 jobs:
   runner-image:
     name: ubuntu-latest - runner-image
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     outputs:
       RUNNER_IMAGE: ${{ steps.resolve-runner-image.outputs.RUNNER_IMAGE }}
     steps:
@@ -32,11 +32,6 @@ jobs:
   sync:
     needs: runner-image
     runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
-      actions: write
     steps:
       - name: Set Git user
         run: |
@@ -88,11 +83,6 @@ jobs:
   diy:
     needs: [runner-image, sync]
     runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
-      actions: write
     steps:
       - name: Set Git user
         run: |
@@ -170,10 +160,6 @@ jobs:
   call-build:
     needs: [runner-image, diy]
     runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
     strategy:
       matrix:
         openwrt_kernel: ["6.6.y", "6.1.y"]
