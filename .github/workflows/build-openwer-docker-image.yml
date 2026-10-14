@@ -33,6 +33,8 @@ env:
   TZ: Etc/UTC
   MAKE_DOCKER_SH: config/docker/make_docker_image.sh
 
+permissions: write-all
+
 jobs:
   set-matrix:
     runs-on: ubuntu-26.04-arm
@@ -53,9 +55,6 @@ jobs:
     needs: set-matrix
     runs-on: ubuntu-26.04-arm
     if: ${{ github.event.repository.owner.id == github.event.sender.id }}
-    permissions:
-      contents: write
-
     strategy:
       matrix: ${{ fromJson(needs.set-matrix.outputs.matrix) }}
     name: build-docker:${{ matrix.docker_img }}@${{ matrix.source_branch }}
