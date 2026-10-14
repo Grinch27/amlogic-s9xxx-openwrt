@@ -88,6 +88,8 @@ on:
 env:
   TZ: Etc/UTC
 
+permissions: write-all
+
 jobs:
   setup:
     runs-on: ubuntu-26.04-arm
@@ -108,9 +110,6 @@ jobs:
     needs: setup
     runs-on: ubuntu-26.04-arm
     if: ${{ github.event.repository.owner.id == github.event.sender.id }}
-    permissions:
-      contents: write
-
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
