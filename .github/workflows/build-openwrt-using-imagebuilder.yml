@@ -331,8 +331,21 @@ env:
   IMAGEBUILDER_SH: config/imagebuilder/imagebuilder.sh
 
 jobs:
+  runner-image:
+    name: ubuntu-latest - runner-image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      RUNNER_IMAGE: ${{ steps.resolve-runner-image.outputs.RUNNER_IMAGE }}
+    steps:
+      - name: Resolve runner-image
+        id: resolve-runner-image
+        uses: Grinch27/github-actions/.github/actions/resolve-runner-image@main
+
   build:
-    runs-on: ubuntu-26.04
+    needs: runner-image
+    runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
     if: ${{ github.event.repository.owner.id == github.event.sender.id }}
     permissions:
       contents: write
