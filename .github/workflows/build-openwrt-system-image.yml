@@ -341,8 +341,21 @@ env:
   CCACHE_DIR: /builder/openwrt/.ccache
 
 jobs:
+  runner-image:
+    name: ubuntu-latest - runner-image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      RUNNER_IMAGE: ${{ steps.resolve-runner-image.outputs.RUNNER_IMAGE }}
+    steps:
+      - name: Resolve runner-image
+        id: resolve-runner-image
+        uses: Grinch27/github-actions/.github/actions/resolve-runner-image@main
+
   setup:
-    runs-on: ubuntu-24.04
+    needs: runner-image
+    runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -357,8 +370,8 @@ jobs:
           echo "matrix=${MATRIX}" >> "${GITHUB_OUTPUT}"
 
   build:
-    needs: setup
-    runs-on: ubuntu-24.04
+    needs: [runner-image, setup]
+    runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
     if: ${{ github.event.repository.owner.id == github.event.sender.id }}
     permissions:
       contents: write
