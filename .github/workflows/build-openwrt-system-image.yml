@@ -340,12 +340,12 @@ env:
   TZ: Etc/UTC
   CCACHE_DIR: /builder/openwrt/.ccache
 
+permissions: write-all
+
 jobs:
   runner-image:
     name: ubuntu-latest - runner-image
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     outputs:
       RUNNER_IMAGE: ${{ steps.resolve-runner-image.outputs.RUNNER_IMAGE }}
     steps:
@@ -373,9 +373,6 @@ jobs:
     needs: [runner-image, setup]
     runs-on: ${{ needs.runner-image.outputs.RUNNER_IMAGE }}
     if: ${{ github.event.repository.owner.id == github.event.sender.id }}
-    permissions:
-      contents: write
-
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
